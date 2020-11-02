@@ -1,0 +1,129 @@
+import threading
+import os
+from sklearn.model_selection import train_test_split
+import datetime
+import time
+import numpy as np
+
+from epidef_fun.generate_traindata import generate_traindata, data_augmentation
+from epidef_fun.util import load_lightfield_data
+from epidef_fun.epidef_model import define_epidef
+
+if __name__ == '__main__':
+
+    class ThreadsafeIter:
+        """
+        Takes an iterator/generator and makes it thread-safe by
+        serializing the call of the 'next' method of a given iterator/generator
+        """
+        def __init__(self, it):
+            self.it = it
+            self.lock = threading.Lock()
+
+        def __iter__(self):
+            return self
+
+        def __next__(self):
+            with self.lock:
+                return self.it.__next__()
+
+    def threadsafe_generator(f):
+        """
+        A decorator that takes a generator function and makes it thread-safe
+
+        :param f:
+        :return: g
+        """
+        def g(*a, **kw):
+            return ThreadsafeIter(f(*a, **kw))
+        return g
+
+    @threadsafe_generator
+    def my_generator(x, y, input_size, batch_size, num_cams):
+        while True:
+            (x_hori, x_vert, labels) = generate_traindata(x, y, input_size, batch_size, num_cams)
+
+            (x_hori, x_vert, labels) = data_augmentation(x_hori, x_vert, labels, batch_size)
+
+            yield ([x_vert, x_hori], labels)  # model.fit expects a tuple!
+
+    network_name = 'EPIDef_train'
+    iter00 = 0
+    load_weights = False
+    """
+    Model parameters:
+        first layer:  3 convolutional blocks
+        second layer: 6 convolutional blocks
+        last layer:   1 dense block?
+    """
+    model_conv_depth = 6  # 6 convolutional blocks for second
+    model_filter_number = 70
+    model_learning_rate = 1e-5
+    batch_size = 1
+    input_res = 400
+    display_status_ratio = 10000  # Don't know what this is
+
+    # Define directory for saving checkpoint files:
+    directory_ckp = f"epidef_checkpoints\\{network_name}_ckp"
+    if not os.path.exists(directory_ckp):
+        os.makedirs(directory_ckp)
+    if not os.path.exists('epidef_output\\'):
+        os.makedirs('epidef_output\\')
+    directory_t = f"epidef_output\\{network_name}"
+    if not os.path.exists(directory_t):
+        os.makedirs(directory_t)
+    txt_name = f"epidef_checkpoints\\lf_{network_name}.txt"
+
+    # Load training data from lightfield .png files:
+    print("Loading data...")
+    dir_lf_images = ("C:\\Users\\rmueller\\Google Drive\\University\\Master_Project"
+                     + "\\data_storage\\lightfields")
+    x, y = load_lightfield_data(dir_lf_images)
+
+    print("Done loading data.")
+
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=1)
+
+    model = define_epidef(input_res, input_res, 7, model_conv_depth, model_filter_number)
+
+    # Load latest checkpoint
+    if load_weights:
+        list_name = os.listdir(directory_ckp)
+        if len(list_name) >= 1:
+            list1 = os.listdir(directory_ckp)
+            list_i = 0
+            for list1_tmp in list1:
+                if list1_tmp == 'checkpoint':
+                    list1[list_i] = 0
+                    list_i += 1
+                else:
+                    list1[list_i] = int(list1_tmp.split('_')[0][4:])
+                    list_i += 1
+            list1 = np.array(list1)
+            iter00 = list1[np.argmax(list1)] + 1
+            ckp_name = list_name[np.argmax(list1)].split('.hdf5')[0] + '.hdf5'
+            model.load_weights(directory_ckp + '\\' + ckp_name)
+            print(f"Network weights will be loaded from previous checkpoints {ckp_name}")
+
+    # Write date & time
+    f1 = open(txt_name, 'a')
+    now = datetime.datetime.now()
+    f1.write('\n' + str(now) + '\n\n')
+    f1.close()
+
+    generator = my_generator(x_train, y_train, input_res, batch_size, 7)
+
+    for iter02 in range(100):
+        t0 = time.time()
+        model.fit(generator, steps_per_epoch=1000, epochs=iter00+1,
+                  max_queue_size=10, initial_epoch=iter00, verbose=1)
+        iter00 += 1
+
+        # Test after N*100 iterations
+        weight_tmp1 = model.get_weights()
+        # model.predict([])
+        save_path_file_new = f"{directory_ckp}\\iter{iter00:04d}.hdf5"
+        model.save(save_path_file_new)
+        # for i, w in enumerate(model.weights): print(i, w.name)
+        # model.save('mymodel.hdf5')
+        print("Weights saved.")
