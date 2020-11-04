@@ -6,7 +6,7 @@ import time
 import numpy as np
 
 from epidef_fun.generate_traindata import generate_traindata, data_augmentation
-from epidef_fun.util import load_lightfield_data, get_list_IDs
+from epidef_fun.util import get_list_IDs
 from epidef_fun.epidef_model import define_epidef
 from epidef_fun.DataGenerator import DataGenerator
 

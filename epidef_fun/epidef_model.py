@@ -62,8 +62,8 @@ def layer3_last():
     """
     seq = Sequential()
     seq.add(Flatten())
-    seq.add(Dense(128, activation='relu', name=f"S3_d1"))
-    seq.add(Dense(64, activation='relu', name=f"S3_d2"))
+    seq.add(Dense(256, activation='relu', name=f"S3_d1"))
+    seq.add(Dense(128, activation='relu', name=f"S3_d2"))
     seq.add(Dense(3, activation='sigmoid', name=f"S3_dfinal"))
     return seq
 
