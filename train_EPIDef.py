@@ -6,8 +6,9 @@ import time
 import numpy as np
 
 from epidef_fun.generate_traindata import generate_traindata, data_augmentation
-from epidef_fun.util import load_lightfield_data
+from epidef_fun.util import load_lightfield_data, get_list_IDs
 from epidef_fun.epidef_model import define_epidef
+from epidef_fun.DataGenerator import DataGenerator
 
 if __name__ == '__main__':
 
@@ -78,11 +79,11 @@ if __name__ == '__main__':
     print("Loading data...")
     dir_lf_images = ("C:\\Users\\rmueller\\Google Drive\\University\\Master_Project"
                      + "\\data_storage\\lightfields")
-    x, y = load_lightfield_data(dir_lf_images)
+    list_IDs = get_list_IDs(dir_lf_images)
 
     print("Done loading data.")
-
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=1)
+    fraction = np.floor(len(list_IDs*0.7))
+    list_IDs_train, list_IDs_test = list_IDs[:fraction], list_IDs[fraction:]
 
     model = define_epidef(input_res, input_res, 7, model_conv_depth, model_filter_number)
 
@@ -111,11 +112,11 @@ if __name__ == '__main__':
     f1.write('\n' + str(now) + '\n\n')
     f1.close()
 
-    generator = my_generator(x_train, y_train, input_res, batch_size, 7)
-
+    generator_train = DataGenerator(list_IDs_train, batch_size=1)
+    generator_test = DataGenerator(list_IDs_test, batch_size=1)
     for iter02 in range(100):
         t0 = time.time()
-        model.fit(generator, steps_per_epoch=1000, epochs=iter00+1,
+        model.fit(generator_train, steps_per_epoch=1000, epochs=iter00+1,
                   max_queue_size=10, initial_epoch=iter00, verbose=1)
         iter00 += 1
 

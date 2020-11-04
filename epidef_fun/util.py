@@ -4,7 +4,22 @@ import random
 import os
 
 
-def load_lightfield_data(lf_directory):
+def get_list_IDs(lf_directory):
+    """
+
+    :param lf_directory:
+    :return: list_IDs:
+    """
+    list_IDs = []
+    for path, subdirs, files in os.walk(lf_directory):
+        if '0002_Set0_Cam_003_img.png' in files:  # only add paths with images
+            list_IDs.append(path)
+    random.seed(1)
+    random.shuffle(list_IDs)
+    return list_IDs
+
+
+def load_lightfield_data(list_IDs):
     """
     Loads lightfield images from directory.
     Images are loaded in following pattern:
@@ -16,20 +31,15 @@ def load_lightfield_data(lf_directory):
              08
              07
 
-    :param lf_directory: Path to directory
+    :param list_IDs: Paths to directories
     :return: features: (#LF, resX, resY, hor_or_vert, #img, RGB)
              labels: (#LF)
              statistics: number of good/scratch/defect for each model (#model, good/scratch/dent)
     """
-    image_dirs = []
-    for path, subdirs, files in os.walk(lf_directory):
-        if '0002_Set0_Cam_003_img.png' in files:
-            image_dirs.append(path)
-    random.seed(1)
-    random.shuffle(image_dirs)
-    features = np.zeros((len(image_dirs[:250]), 400, 400, 2, 7, 3), np.float32)
-    labels = np.zeros((len(image_dirs[:250])), np.int64)
-    for i, lf in enumerate(image_dirs[:250]):
+
+    features = np.zeros((len(list_IDs), 400, 400, 2, 7, 3), np.float32)
+    labels = np.zeros((len(list_IDs)), np.int64)
+    for i, lf in enumerate(list_IDs):
         print(lf)
         tmp = np.float32(imageio.imread(f"{lf}\\0002_Set0_Cam_000_img.png"))
         features[i, :, :, 0, 6, :] = tmp[:, :, :3]  # rightmost image

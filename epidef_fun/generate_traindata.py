@@ -1,12 +1,12 @@
 import numpy as np
 
 
-def generate_traindata(traindata_all, traindata_label, input_size, batch_size, num_cams):
+def generate_traindata(x, y, input_size, batch_size, num_cams):
     """
     Generates training data using LF images and disparity maps by randomly chosen variables.
 
-    :param traindata_all: (#LF, resX, resY, hori_or_vert, num_cams, RGB)
-    :param traindata_label: (#LF)
+    :param x: (#LF, resX, resY, hori_or_vert, num_cams, RGB)
+    :param y: (#LF)
     :param input_size: resX/resY
     :param batch_size: size of batch
     :param num_cams: number of cameras along one direction
@@ -28,29 +28,29 @@ def generate_traindata(traindata_all, traindata_label, input_size, batch_size, n
     traindata_batch_label = np.zeros(batch_size)
 
     # Generate image stacks
-    for ii in range(0, batch_size):
+    for ii in range(batch_size):
         # Variables for gray conversion
-        # rand_3color = 0.05 + np.random.rand(3)
-        # rand_3color = rand_3color/np.sum(rand_3color)
-        # r = rand_3color[0]
-        # g = rand_3color[1]
-        # b = rand_3color[2]
-        r = 0.299
-        g = 0.587
-        b = 0.114
+        rand_3color = 0.05 + np.random.rand(3)
+        rand_3color = rand_3color/np.sum(rand_3color)
+        r = rand_3color[0]
+        g = rand_3color[1]
+        b = rand_3color[2]
+        # r = 0.299
+        # g = 0.587
+        # b = 0.114
 
         # choose one random lightfield out of training data
-        image_id = np.random.choice(np.arange(traindata_all.shape[0]))
+        image_id = np.random.choice(np.arange(x.shape[0]))
 
         # Since we always use 7x7 images the center view stays the same
         # Two image stacks are selected and gray-scaled
-        x_vert[ii, :, :, :] = (r*traindata_all[image_id, :, :, 1, :, 0]
-                               + g*traindata_all[image_id, :, :, 1, :, 1]
-                               + b*traindata_all[image_id, :, :, 1, :, 2]).astype('float32')
-        x_hori[ii, :, :, :] = (r*traindata_all[image_id, :, :, 0, :, 0]
-                               + g*traindata_all[image_id, :, :, 0, :, 1]
-                               + b*traindata_all[image_id, :, :, 0, :, 2]).astype('float32')
-        traindata_batch_label[ii] = traindata_label[image_id]
+        x_vert[ii, :, :, :] = (r * x[image_id, :, :, 1, :, 0]
+                               + g * x[image_id, :, :, 1, :, 1]
+                               + b * x[image_id, :, :, 1, :, 2]).astype('float32')
+        x_hori[ii, :, :, :] = (r * x[image_id, :, :, 0, :, 0]
+                               + g * x[image_id, :, :, 0, :, 1]
+                               + b * x[image_id, :, :, 0, :, 2]).astype('float32')
+        traindata_batch_label[ii] = y[image_id]
 
     x_hori = x_hori/255
     x_vert = x_vert/255
