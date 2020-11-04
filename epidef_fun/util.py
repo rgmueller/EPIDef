@@ -56,7 +56,7 @@ def load_lightfield_data(list_IDs):
     features = np.zeros((len(list_IDs), 400, 400, 2, 7, 3), np.float32)
     labels = np.zeros((len(list_IDs)), np.int64)
     for i, lf in enumerate(list_IDs):
-        print(lf)
+        print(lf.split('\\')[-2:])
         tmp = np.float32(imageio.imread(f"{lf}\\0002_Set0_Cam_000_img.png"))
         features[i, :, :, 0, 6, :] = tmp[:, :, :3]  # rightmost image
         tmp = np.float32(imageio.imread(f"{lf}\\0002_Set0_Cam_001_img.png"))
