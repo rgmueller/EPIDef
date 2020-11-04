@@ -1,5 +1,5 @@
 from tensorflow.keras import Model, Sequential
-from tensorflow.keras.layers import Flatten, Dense, Conv2D, Reshape
+from tensorflow.keras.layers import Flatten, Dense, Conv2D
 from tensorflow.keras.layers import Dropout, BatchNormalization, Input, MaxPool2D
 from tensorflow.keras.backend import concatenate
 
@@ -42,6 +42,8 @@ def layer2_merged(res_x, res_y, filter_num, conv_depth):
     :return:
     """
     seq = Sequential()
+    seq.add(Conv2D(32, (3,3), padding='valid', input_shape=(res_x, res_y, filter_num)))
+
     for i in range(conv_depth):
         # seq.add(MaxPool2D((2, 2), name=f'S2_MP{i}'))  # v Do strides instead of MaxPooling? v
         seq.add(Conv2D(filter_num, (2, 2), strides=(2, 2),

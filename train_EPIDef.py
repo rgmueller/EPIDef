@@ -12,42 +12,6 @@ from epidef_fun.DataGenerator import DataGenerator
 
 if __name__ == '__main__':
 
-    class ThreadsafeIter:
-        """
-        Takes an iterator/generator and makes it thread-safe by
-        serializing the call of the 'next' method of a given iterator/generator
-        """
-        def __init__(self, it):
-            self.it = it
-            self.lock = threading.Lock()
-
-        def __iter__(self):
-            return self
-
-        def __next__(self):
-            with self.lock:
-                return self.it.__next__()
-
-    def threadsafe_generator(f):
-        """
-        A decorator that takes a generator function and makes it thread-safe
-
-        :param f:
-        :return: g
-        """
-        def g(*a, **kw):
-            return ThreadsafeIter(f(*a, **kw))
-        return g
-
-    @threadsafe_generator
-    def my_generator(x, y, input_size, batch_size, num_cams):
-        while True:
-            (x_hori, x_vert, labels) = generate_traindata(x, y, input_size, batch_size, num_cams)
-
-            (x_hori, x_vert, labels) = data_augmentation(x_hori, x_vert, labels, batch_size)
-
-            yield ([x_vert, x_hori], labels)  # model.fit expects a tuple!
-
     network_name = 'EPIDef_train'
     iter00 = 0
     load_weights = False
@@ -116,7 +80,7 @@ if __name__ == '__main__':
     generator_test = DataGenerator(list_IDs_test, batch_size=1)
 
     t0 = time.time()
-    model.fit(generator_train, epochs=2, max_queue_size=10, initial_epoch=iter00, verbose=1)
+    model.fit(generator_train, epochs=10, max_queue_size=10, initial_epoch=iter00, verbose=1)
     iter00 += 1
 
     # Test after N*100 iterations

@@ -10,12 +10,29 @@ def get_list_IDs(lf_directory):
     :param lf_directory:
     :return: list_IDs:
     """
+    good = 0
+    scratch = 0
+    dent = 0
+    error = 0
     list_IDs = []
     for path, subdirs, files in os.walk(lf_directory):
         if '0002_Set0_Cam_003_img.png' in files:  # only add paths with images
             list_IDs.append(path)
+            if 'good' in lf:
+                good += 0
+            elif 'scratch' in lf:
+                scratch += 1
+            elif 'dent' in lf:
+                dent += 1
+            else:
+                error += 1
+            labels[i] = gt
     random.seed(1)
     random.shuffle(list_IDs)
+    print(f"Good: {good/(good+scratch+dent+error)}")
+    print(f"Scratch: {scratch / (good + scratch + dent + error)}")
+    print(f"Dent: {dent / (good + scratch + dent + error)}")
+    print(f"Error: {error / (good + scratch + dent + error)}")
     return list_IDs
 
 
@@ -70,7 +87,6 @@ def load_lightfield_data(list_IDs):
         features[i, :, :, 1, 6, :] = tmp[:, :, :3]  # top image
         del tmp
 
-        # xxxx_mxdefect
         # 0: no defect, 1: scratch, 2: dent
         if 'good' in lf:
             gt = 0
