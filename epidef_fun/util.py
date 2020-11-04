@@ -18,15 +18,14 @@ def get_list_IDs(lf_directory):
     for path, subdirs, files in os.walk(lf_directory):
         if '0002_Set0_Cam_003_img.png' in files:  # only add paths with images
             list_IDs.append(path)
-            if 'good' in lf:
-                good += 0
-            elif 'scratch' in lf:
+            if 'good' in path:
+                good += 1
+            elif 'scratch' in path:
                 scratch += 1
-            elif 'dent' in lf:
+            elif 'dent' in path:
                 dent += 1
             else:
                 error += 1
-            labels[i] = gt
     random.seed(1)
     random.shuffle(list_IDs)
     print(f"Good: {good/(good+scratch+dent+error)}")
@@ -53,7 +52,7 @@ def load_lightfield_data(list_IDs):
              labels: (#LF)
              statistics: number of good/scratch/defect for each model (#model, good/scratch/dent)
     """
-
+    print("\nNow training on:")
     features = np.zeros((len(list_IDs), 400, 400, 2, 7, 3), np.float32)
     labels = np.zeros((len(list_IDs)), np.int64)
     for i, lf in enumerate(list_IDs):

@@ -26,7 +26,6 @@ if __name__ == '__main__':
     model_learning_rate = 1e-5
     batch_size = 1
     input_res = 400
-    display_status_ratio = 10000  # Don't know what this is
 
     # Define directory for saving checkpoint files:
     directory_ckp = f"epidef_checkpoints\\{network_name}_ckp"
@@ -40,12 +39,13 @@ if __name__ == '__main__':
     txt_name = f"epidef_checkpoints\\lf_{network_name}.txt"
 
     # Load training data from lightfield .png files:
-    print("Loading data...")
+    print("Loading lightfield paths...")
     dir_lf_images = ("C:\\Users\\rmueller\\Google Drive\\University\\Master_Project"
                      + "\\data_storage\\lightfields")
+    # dir_lf_images = "D:\\blender_output"
     list_IDs = get_list_IDs(dir_lf_images)
 
-    print("Done loading data.")
+    print("Done loading lightfield paths.")
     fraction = np.int(len(list_IDs)*0.7)
     list_IDs_train, list_IDs_test = list_IDs[:fraction], list_IDs[fraction:]
 
