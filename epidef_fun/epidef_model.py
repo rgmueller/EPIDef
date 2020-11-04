@@ -41,8 +41,6 @@ def layer2_merged(res_x, res_y, filter_num, conv_depth):
     :param conv_depth: should be 6 blocks
     :return:
     """
-    seq = Sequential()
-    seq.add(Conv2D(32, (3,3), padding='valid', input_shape=(res_x, res_y, filter_num)))
 
     for i in range(conv_depth):
         # seq.add(MaxPool2D((2, 2), name=f'S2_MP{i}'))  # v Do strides instead of MaxPooling? v
