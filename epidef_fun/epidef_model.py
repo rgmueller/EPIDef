@@ -62,7 +62,7 @@ def layer3_last():
     seq.add(Flatten())
     seq.add(Dense(128, activation='relu', name=f"S3_d1"))
     seq.add(Dense(64, activation='relu', name=f"S3_d2"))
-    seq.add(Dense(1, activation='sigmoid', name=f"S3_dfinal"))
+    seq.add(Dense(3, activation='sigmoid', name=f"S3_dfinal"))
     return seq
 
 
@@ -94,6 +94,6 @@ def define_epidef(sz_input1, sz_input2, view_n, conv_depth, filter_num):
     # Last Dense layer: Dense - ReLU - Dense
     output = layer3_last()(mid_merged_)
     model_512 = Model(inputs=[input_stack_vert, input_stack_hori], outputs=[output])
-    model_512.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model_512.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     model_512.summary()
     return model_512
