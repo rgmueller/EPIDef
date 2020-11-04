@@ -82,7 +82,7 @@ if __name__ == '__main__':
     list_IDs = get_list_IDs(dir_lf_images)
 
     print("Done loading data.")
-    fraction = np.floor(len(list_IDs*0.7))
+    fraction = np.int(len(list_IDs)*0.7)
     list_IDs_train, list_IDs_test = list_IDs[:fraction], list_IDs[fraction:]
 
     model = define_epidef(input_res, input_res, 7, model_conv_depth, model_filter_number)
@@ -114,17 +114,16 @@ if __name__ == '__main__':
 
     generator_train = DataGenerator(list_IDs_train, batch_size=1)
     generator_test = DataGenerator(list_IDs_test, batch_size=1)
-    for iter02 in range(100):
-        t0 = time.time()
-        model.fit(generator_train, steps_per_epoch=1000, epochs=iter00+1,
-                  max_queue_size=10, initial_epoch=iter00, verbose=1)
-        iter00 += 1
 
-        # Test after N*100 iterations
-        weight_tmp1 = model.get_weights()
-        # model.predict([])
-        save_path_file_new = f"{directory_ckp}\\iter{iter00:04d}.hdf5"
-        model.save(save_path_file_new)
-        # for i, w in enumerate(model.weights): print(i, w.name)
-        # model.save('mymodel.hdf5')
-        print("Weights saved.")
+    t0 = time.time()
+    model.fit(generator_train, epochs=2, max_queue_size=10, initial_epoch=iter00, verbose=1)
+    iter00 += 1
+
+    # Test after N*100 iterations
+    weight_tmp1 = model.get_weights()
+    # model.predict([])
+    save_path_file_new = f"{directory_ckp}\\iter{iter00:04d}.hdf5"
+    model.save(save_path_file_new)
+    # for i, w in enumerate(model.weights): print(i, w.name)
+    # model.save('mymodel.hdf5')
+    print("Weights saved.")
