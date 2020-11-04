@@ -2,6 +2,7 @@ from tensorflow.keras import Model, Sequential
 from tensorflow.keras.layers import Flatten, Dense, Conv2D
 from tensorflow.keras.layers import Dropout, BatchNormalization, Input, MaxPool2D
 from tensorflow.keras.backend import concatenate
+import tensorflow as tf
 
 
 def layer1_multistream(res_x, res_y, num_cams, filter_num):
@@ -42,8 +43,6 @@ def layer2_merged(res_x, res_y, filter_num, conv_depth):
     :return:
     """
     seq = Sequential()
-    seq.add(Conv2D(32, (3,3), padding='valid', input_shape=(res_x, res_y, filter_num)))
-
     for i in range(conv_depth):
         # seq.add(MaxPool2D((2, 2), name=f'S2_MP{i}'))  # v Do strides instead of MaxPooling? v
         seq.add(Conv2D(filter_num, (2, 2), strides=(2, 2),
@@ -96,6 +95,9 @@ def define_epidef(sz_input1, sz_input2, view_n, conv_depth, filter_num):
     # Last Dense layer: Dense - ReLU - Dense
     output = layer3_last()(mid_merged_)
     model_512 = Model(inputs=[input_stack_vert, input_stack_hori], outputs=[output])
-    model_512.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    METRICS = ['accuracy',
+               tf.keras.metrics.Precision(name='precision'),
+               tf.keras.metrics.Recall(name='recall')]
+    model_512.compile(loss='categorical_crossentropy', optimizer='adam', metrics=METRICS)
     model_512.summary()
     return model_512
