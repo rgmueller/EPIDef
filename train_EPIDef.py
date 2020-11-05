@@ -83,6 +83,13 @@ if __name__ == '__main__':
     t0 = time.time()
     checkpoint_cb = tf.keras.callbacks.ModelCheckpoint("epidef_model.h5", save_best_only=True)
     early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
+    # Try this out at some point:
+    # def exponential_decay(lr0, s):
+    #     def exponential_decay_fn(epoch):
+    #         return lr0 * 0.1**(epoch/s)
+    #     return exponential_decay_fn
+    # exponential_decay_fn = exponential_decay(0.01, 20)
+    # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(exponential_decay_fn)
     model.fit(generator_train, epochs=10, max_queue_size=10, initial_epoch=iter00, verbose=1)
     iter00 += 1
 
