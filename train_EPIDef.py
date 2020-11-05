@@ -5,6 +5,7 @@ import datetime
 import time
 import numpy as np
 
+import tensorflow as tf
 from epidef_fun.generate_traindata import generate_traindata, data_augmentation
 from epidef_fun.util import get_list_IDs
 from epidef_fun.epidef_model import define_epidef
@@ -80,6 +81,8 @@ if __name__ == '__main__':
     generator_test = DataGenerator(list_IDs_test, batch_size=1)
 
     t0 = time.time()
+    checkpoint_cb = tf.keras.callbacks.ModelCheckpoint("epidef_model.h5", save_best_only=True)
+    early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
     model.fit(generator_train, epochs=10, max_queue_size=10, initial_epoch=iter00, verbose=1)
     iter00 += 1
 
