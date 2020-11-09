@@ -25,7 +25,7 @@ if __name__ == '__main__':
     model_conv_depth = 6  # 6 convolutional blocks for second
     model_filter_number = 70
     model_learning_rate = 1e-5
-    batch_size = 2
+    batch_size = 1
     input_res = 224
 
     # Define directory for saving checkpoint files:
@@ -41,8 +41,8 @@ if __name__ == '__main__':
 
     # Load training data from lightfield .png files:
     print("Loading lightfield paths...")
-    dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\Master_Project"
-                     + "\\data_storage\\lightfields_nohdr")
+    dir_lf_images = ("C:\\Users\\rmueller\\Google Drive\\University\\Master_Project"
+                     + "\\data_storage\\lightfields")
     # dir_lf_images = "D:\\blender_output"
     list_IDs = get_list_IDs(dir_lf_images)
 

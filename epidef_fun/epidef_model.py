@@ -72,6 +72,31 @@ def get_block(x_input, input_channels, output_channels):
     return x
 
 
+def EffNet(input_shape, num_classes, plot_model=False):
+    """EffNet
+    This function defines a EfficientNet architecture.
+    # Arguments
+        input_shape: An integer or tuple/list of 3 integers, shape
+            of input tensor.
+        num_classes: Integer, number of classes.
+        plot_model: Boolean, whether to plot model architecture or not
+    # Returns
+        EfficientNet model.
+    """
+    x_input = tf.keras.layers.Input(shape=input_shape)
+    x = get_block(x_input, 32, 64)
+    x = get_block(x, 64, 128)
+    x = get_block(x, 128, 256)
+    x = tf.keras.layers.Flatten()(x)
+    x = tf.keras.layers.Dense(num_classes, activation='softmax')(x)
+    model = tf.keras.models.Model(inputs=x_input, outputs=x)
+
+    if plot_model:
+        tf.keras.utils.plot_model(model, to_file='model.png', show_shapes=True)
+
+    return model
+
+
 def efficientnet():
     """
     Merged layer: Conv - ReLU - Conv - ReLU - BN
@@ -82,8 +107,18 @@ def efficientnet():
     :param conv_depth: should be 6 blocks
     :return: seq:
     """
+    # seq = EffNet((224, 224, 140), 3)
     seq = Sequential()
-    seq.add(Conv2D(3, (3, 3), padding='same', name='ABC', activation='relu'))
+    seq.add(Conv2D(140, (3, 3), padding='same', name='1', activation='relu'))
+    seq.add(BatchNormalization(axis=-1, name=f'12'))
+    seq.add(Conv2D(70, (3, 3), padding='same', name='2', activation='relu'))
+    seq.add(BatchNormalization(axis=-1, name=f'13'))
+    seq.add(Conv2D(35, (3, 3), padding='same', name='3', activation='relu'))
+    seq.add(BatchNormalization(axis=-1, name=f'14'))
+    seq.add(Conv2D(10, (3, 3), padding='same', name='4', activation='relu'))
+    seq.add(BatchNormalization(axis=-1, name=f'15'))
+    seq.add(Conv2D(3, (3, 3), padding='same', name='5', activation='relu'))
+    seq.add(BatchNormalization(axis=-1, name=f'16'))
     seq.add(EfficientNetB0(include_top=True, weights=None, classes=3))
 
     return seq
