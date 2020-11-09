@@ -25,7 +25,7 @@ if __name__ == '__main__':
     model_conv_depth = 6  # 6 convolutional blocks for second
     model_filter_number = 70
     model_learning_rate = 1e-5
-    batch_size = 1
+    batch_size = 2
     input_res = 224
 
     # Define directory for saving checkpoint files:

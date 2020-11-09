@@ -32,7 +32,7 @@ def layer1_multistream(res_x, res_y, num_cams, filter_num):
     return seq
 
 
-def layer2_merged(res_x, res_y, filter_num, conv_depth):
+def layer2_merged():  #(res_x, res_y, filter_num, conv_depth):
     """
     Merged layer: Conv - ReLU - Conv - ReLU - BN
 
@@ -94,10 +94,10 @@ def define_epidef(sz_input1, sz_input2, view_n, conv_depth, filter_num):
 
     # Merged layer: MaxPool - Conv - ReLU - Conv - ReLU - BN
     # mid_merged_ = layer2_merged(sz_input1, sz_input2, 2*filter_num, conv_depth)(mid_merged)
-    mid_merged_ = layer2_merged(mid_merged)
+    mid_merged_ = layer2_merged()
     # Last Dense layer: Dense - ReLU - Dense
     # output = layer3_last()(mid_merged_)
-    output = mid_merged_
+    output = mid_merged_(mid_merged)
     model_512 = Model(inputs=[input_stack_vert, input_stack_hori], outputs=[output])
     METRICS = ['accuracy',
                tf.keras.metrics.Precision(name='precision'),
