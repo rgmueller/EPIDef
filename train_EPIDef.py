@@ -77,8 +77,8 @@ if __name__ == '__main__':
     f1.write('\n' + str(now) + '\n\n')
     f1.close()
 
-    generator_train = DataGenerator(list_IDs_train, batch_size=1)
-    generator_test = DataGenerator(list_IDs_test, batch_size=1)
+    generator_train = DataGenerator(list_IDs_train, batch_size=batch_size)
+    generator_test = DataGenerator(list_IDs_test, batch_size=batch_size)
 
     t0 = time.time()
     checkpoint_cb = tf.keras.callbacks.ModelCheckpoint("epidef_model.h5", save_best_only=True)

@@ -5,6 +5,7 @@ from tensorflow.keras.backend import concatenate
 import tensorflow as tf
 from tensorflow.keras.applications import EfficientNetB0
 
+
 def layer1_multistream(res_x, res_y, num_cams, filter_num):
     """
     Multi-stream layer: Conv - ReLU - Conv - ReLU - BN
@@ -32,7 +33,7 @@ def layer1_multistream(res_x, res_y, num_cams, filter_num):
     return seq
 
 
-def layer2_merged():  #(res_x, res_y, filter_num, conv_depth):
+def layer2_merged():
     """
     Merged layer: Conv - ReLU - Conv - ReLU - BN
 
@@ -40,19 +41,12 @@ def layer2_merged():  #(res_x, res_y, filter_num, conv_depth):
     :param res_y:
     :param filter_num: twice that of layer 1 (2x70)
     :param conv_depth: should be 6 blocks
-    :return:
+    :return: seq:
     """
     seq = Sequential()
-    seq.add(Conv2D(3, (3, 3), padding='valid', name='ABC', activation='relu'))
+    seq.add(Conv2D(3, (3, 3), padding='same', name='ABC', activation='relu'))
     seq.add(EfficientNetB0(include_top=True, weights=None, classes=3))
-    # seq = Sequential()
-    # for i in range(conv_depth):
-    #     # seq.add(MaxPool2D((2, 2), name=f'S2_MP{i}'))  # v Do strides instead of MaxPooling? v
-    #     seq.add(Conv2D(filter_num, (2, 2), strides=(2, 2),
-    #                    input_shape=(int(res_x/2**i), int(res_y/2**i), filter_num),
-    #                    padding='valid', name=f'S2_C1{i}', activation='relu'))
-    #     seq.add(Conv2D(filter_num, (2, 2), padding='same', name=f'S2_C2{i}', activation='relu'))
-    #     seq.add(BatchNormalization(axis=-1, name=f'S2_BN{i}'))
+
     return seq
 
 
@@ -95,13 +89,12 @@ def define_epidef(sz_input1, sz_input2, view_n, conv_depth, filter_num):
     # Merged layer: MaxPool - Conv - ReLU - Conv - ReLU - BN
     # mid_merged_ = layer2_merged(sz_input1, sz_input2, 2*filter_num, conv_depth)(mid_merged)
     mid_merged_ = layer2_merged()
-    # Last Dense layer: Dense - ReLU - Dense
-    # output = layer3_last()(mid_merged_)
+
     output = mid_merged_(mid_merged)
     model_512 = Model(inputs=[input_stack_vert, input_stack_hori], outputs=[output])
-    METRICS = ['accuracy',
+    metrics = ['accuracy',
                tf.keras.metrics.Precision(name='precision'),
                tf.keras.metrics.Recall(name='recall')]
-    model_512.compile(loss='categorical_crossentropy', optimizer='adam', metrics=METRICS)
+    model_512.compile(loss='categorical_crossentropy', optimizer='adam', metrics=metrics)
     model_512.summary()
     return model_512
