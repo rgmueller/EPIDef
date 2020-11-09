@@ -33,7 +33,46 @@ def layer1_multistream(res_x, res_y, num_cams, filter_num):
     return seq
 
 
-def layer2_merged():
+def get_top(x_input):
+    """Block top operations
+    This functions apply Batch Normalization and Leaky ReLU activation to the input.
+    # Arguments:
+        x_input: Tensor, input to apply BN and activation  to.
+    # Returns:
+        Output tensor
+    """
+
+    x = tf.keras.layers.BatchNormalization()(x_input)
+    x = tf.keras.layers.LeakyReLU()(x)
+    return x
+
+
+def get_block(x_input, input_channels, output_channels):
+    """MBConv block
+    This function defines a mobile Inverted Residual Bottleneck block with BN and Leaky ReLU
+    # Arguments
+        x_input: Tensor, input tensor of conv layer.
+        input_channels: Integer, the dimentionality of the input space.
+        output_channels: Integer, the dimensionality of the output space.
+
+    # Returns
+        Output tensor.
+    """
+
+    x = tf.keras.layers.Conv2D(input_channels, kernel_size=(1, 1), padding='same', use_bias=False)(
+        x_input)
+    x = get_top(x)
+    x = tf.keras.layers.DepthwiseConv2D(kernel_size=(1, 3), padding='same', use_bias=False)(x)
+    x = get_top(x)
+    x = tf.keras.layers.MaxPooling2D(pool_size=(2, 1), strides=(2, 1))(x)
+    x = tf.keras.layers.DepthwiseConv2D(kernel_size=(3, 1), padding='same', use_bias=False)(x)
+    x = get_top(x)
+    x = tf.keras.layers.Conv2D(output_channels, kernel_size=(2, 1), strides=(1, 2), padding='same',
+                               use_bias=False)(x)
+    return x
+
+
+def efficientnet():
     """
     Merged layer: Conv - ReLU - Conv - ReLU - BN
 
@@ -88,7 +127,7 @@ def define_epidef(sz_input1, sz_input2, view_n, conv_depth, filter_num):
 
     # Merged layer: MaxPool - Conv - ReLU - Conv - ReLU - BN
     # mid_merged_ = layer2_merged(sz_input1, sz_input2, 2*filter_num, conv_depth)(mid_merged)
-    mid_merged_ = layer2_merged()
+    mid_merged_ = efficientnet()
 
     output = mid_merged_(mid_merged)
     model_512 = Model(inputs=[input_stack_vert, input_stack_hori], outputs=[output])
