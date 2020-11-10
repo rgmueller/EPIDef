@@ -5,6 +5,7 @@ from tensorflow.keras.layers import Add
 from tensorflow.keras.backend import concatenate
 import tensorflow as tf
 from tensorflow.keras.applications import EfficientNetB0
+from official.vision.image_classification.efficientnet import efficientnet_model
 
 
 def layer1_multistream(res_x, res_y, num_cams, filter_num):
@@ -126,12 +127,13 @@ def efficientnet():
     :return: seq:
     """
     # seq = EffNet((224, 224, 140), 3)
-    seq = Sequential()
-    seq.add(Conv2D(140, (3, 3), strides=(2, 2), padding='same', activation='relu'))
-    seq.add(BatchNormalization(axis=-1))
-
-    seq.add(Flatten())
-    seq.add(Dense(3, activation='softmax'))
+    seq = efficientnet_model.EfficientNet()
+    # seq = Sequential()
+    # seq.add(Conv2D(140, (3, 3), strides=(2, 2), padding='same', activation='relu'))
+    # seq.add(BatchNormalization(axis=-1))
+    #
+    # seq.add(Flatten())
+    # seq.add(Dense(3, activation='softmax'))
     # seq.add(EfficientNetB0(include_top=True, weights=None, classes=3))
     return seq
 
