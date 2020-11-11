@@ -26,7 +26,7 @@ if __name__ == '__main__':
     model_filter_number = 70
     model_learning_rate = 1e-5
     batch_size = 1
-    input_res = 224
+    input_res = 236
 
     # Define directory for saving checkpoint files:
     directory_ckp = f"epidef_checkpoints\\{network_name}_ckp"
