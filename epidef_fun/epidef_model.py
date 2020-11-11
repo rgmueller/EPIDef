@@ -73,15 +73,10 @@ def efficientnet():
     :param conv_depth: should be 6 blocks
     :return: seq:
     """
-    # seq = EffNet((224, 224, 140), 3)
     seq = efficientnet_model.EfficientNet()
     # seq = Sequential()
     # seq.add(Conv2D(140, (3, 3), strides=(2, 2), padding='same', activation='relu'))
     # seq.add(BatchNormalization(axis=-1))
-    #
-    # seq.add(Flatten())
-    # seq.add(Dense(3, activation='softmax'))
-    # seq.add(EfficientNetB0(include_top=True, weights=None, classes=3))
     return seq
 
 
