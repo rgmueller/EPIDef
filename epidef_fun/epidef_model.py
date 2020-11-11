@@ -87,14 +87,13 @@ def efficientnet():
 #     return seq
 
 
-def define_epidef(sz_input1, sz_input2, view_n, conv_depth, filter_num):
+def define_epidef(sz_input1, sz_input2, view_n, filter_num):
     """
     Compiles the full network.
 
     :param sz_input1: resX
     :param sz_input2: resY
     :param view_n: num_cams
-    :param conv_depth: number of blocks in second layer
     :param filter_num: number of channels in multistream layers
     :return:
     """
