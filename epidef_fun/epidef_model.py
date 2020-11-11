@@ -23,9 +23,9 @@ def layer1_multistream(res_x, res_y, num_cams, filter_num):
     j = layer1_multistream.instance
     seq = Sequential()
     for i in range(3):
-        seq.add(Conv2D(filter_num, (2, 2), input_shape=(res_x, res_y, num_cams),
+        seq.add(Conv2D(filter_num, (3, 3), input_shape=(res_x, res_y, num_cams),
                        padding='same', name=f'S1_C1{i}_{j}', activation='relu'))
-        seq.add(Conv2D(filter_num, (2, 2), padding='same',
+        seq.add(Conv2D(filter_num, (3, 3), padding='same',
                        name=f'S1_C2{i}_{j}', activation='relu'))
         # In original activation comes after BN, but other way round may be better:
         # https://blog.paperspace.com/busting-the-myths-about-batch-normalization/
