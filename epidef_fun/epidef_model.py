@@ -1,6 +1,6 @@
 from tensorflow.keras import Model, Sequential
-from tensorflow.keras.layers import Flatten, Dense, Conv2D
-from tensorflow.keras.layers import Dropout, BatchNormalization, Input, MaxPool2D, Add
+from tensorflow.keras.layers import Conv2D
+from tensorflow.keras.layers import BatchNormalization, Input
 from tensorflow.keras.backend import concatenate
 import tensorflow as tf
 from official.vision.image_classification.efficientnet import efficientnet_model
