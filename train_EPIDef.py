@@ -22,7 +22,6 @@ if __name__ == '__main__':
         second layer: 6 convolutional blocks
         last layer:   1 dense block?
     """
-    model_conv_depth = 6  # 6 convolutional blocks for second
     model_filter_number = 70
     model_learning_rate = 1e-5
     batch_size = 1
@@ -50,7 +49,7 @@ if __name__ == '__main__':
     fraction = np.int(len(list_IDs)*0.7)
     list_IDs_train, list_IDs_test = list_IDs[:fraction], list_IDs[fraction:]
 
-    model = define_epidef(input_res, input_res, 7, model_conv_depth, model_filter_number)
+    model = define_epidef(input_res, input_res, 7, model_filter_number)
 
     # Load latest checkpoint
     if load_weights:
