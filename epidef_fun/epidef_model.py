@@ -41,25 +41,8 @@ def layer1_multistream(res_x, res_y, num_cams, filter_num):
     seq.add(Conv2D(filter_num, (3, 3), input_shape=(res_x-10, res_y-10, num_cams),
                    padding='valid', name=f'S1_C22_{j}', activation='relu'))
     seq.add(BatchNormalization(axis=-1, name=f'S1_BN2_{j}'))
-    # seq.add(Reshape(input_dim1-6, input_dim2-6, filter_num))
     layer1_multistream.instance += 1
     return seq
-
-
-# def inverted_residual_block(x, expand=64, squeeze=16):
-#     m = Conv2D(expand, (1, 1), activation='relu')(x)
-#     m = DepthwiseConv2D((3, 3), activation='relu')(m)
-#     m = Conv2D(squeeze, (1, 1), activation='relu')(m)
-#     return Add()([m, x])
-#
-# def bottleneck_block(x, stride, expand=64, squeeze=16):
-#     m = Conv2D(expand, (1, 1), strides=(stride, stride), activation='relu')(x)
-#     m = BatchNormalization()(m)
-#     m = DepthwiseConv2D((3, 3), activation='relu')(m)
-#     m = BatchNormalization()(m)
-#     m = Conv2D(squeeze, (1, 1))(m)  # no activation on last convolution
-#     m = BatchNormalization()(m)
-#     return Add()([m, x])
 
 
 def efficientnet():
