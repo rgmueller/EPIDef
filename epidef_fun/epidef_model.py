@@ -1,10 +1,8 @@
 from tensorflow.keras import Model, Sequential
 from tensorflow.keras.layers import Flatten, Dense, Conv2D
-from tensorflow.keras.layers import Dropout, BatchNormalization, Input, MaxPool2D, DepthwiseConv2D
-from tensorflow.keras.layers import Add
+from tensorflow.keras.layers import Dropout, BatchNormalization, Input, MaxPool2D, Add
 from tensorflow.keras.backend import concatenate
 import tensorflow as tf
-from tensorflow.keras.applications import EfficientNetB0
 from official.vision.image_classification.efficientnet import efficientnet_model
 
 
@@ -54,20 +52,6 @@ def efficientnet():
     seq = efficientnet_model.EfficientNet()
 
     return seq
-
-
-# def layer3_last():
-#     """
-#     Last layer: Flatten - Dense - ReLU - Dense - Sigmoid
-#
-#     :return:
-#     """
-#     seq = Sequential()
-#     seq.add(Flatten())
-#     seq.add(Dense(256, activation='relu', name=f"S3_d1"))
-#     seq.add(Dense(128, activation='relu', name=f"S3_d2"))
-#     seq.add(Dense(3, activation='softmax', name=f"S3_dfinal"))
-#     return seq
 
 
 def define_epidef(sz_input1, sz_input2, view_n, filter_num):
