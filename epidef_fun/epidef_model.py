@@ -50,7 +50,6 @@ def efficientnet():
     :return: seq:
     """
     seq = efficientnet_model.EfficientNet()
-
     return seq
 
 
@@ -75,8 +74,6 @@ def define_epidef(sz_input1, sz_input2, view_n, filter_num):
     # Merge layers
     mid_merged = concatenate([mid_vert, mid_hori])
 
-    # Merged layer: MaxPool - Conv - ReLU - Conv - ReLU - BN
-    # mid_merged_ = layer2_merged(sz_input1, sz_input2, 2*filter_num, conv_depth)(mid_merged)
     mid_merged_ = efficientnet()
 
     output = mid_merged_(mid_merged)
