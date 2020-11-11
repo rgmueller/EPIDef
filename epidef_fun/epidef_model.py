@@ -52,7 +52,6 @@ def layer1_multistream(res_x, res_y, num_cams, filter_num):
 #     m = Conv2D(squeeze, (1, 1), activation='relu')(m)
 #     return Add()([m, x])
 #
-#
 # def bottleneck_block(x, stride, expand=64, squeeze=16):
 #     m = Conv2D(expand, (1, 1), strides=(stride, stride), activation='relu')(x)
 #     m = BatchNormalization()(m)
@@ -67,16 +66,10 @@ def efficientnet():
     """
     Merged layer: Conv - ReLU - Conv - ReLU - BN
 
-    :param res_x:
-    :param res_y:
-    :param filter_num: twice that of layer 1 (2x70)
-    :param conv_depth: should be 6 blocks
     :return: seq:
     """
     seq = efficientnet_model.EfficientNet()
-    # seq = Sequential()
-    # seq.add(Conv2D(140, (3, 3), strides=(2, 2), padding='same', activation='relu'))
-    # seq.add(BatchNormalization(axis=-1))
+
     return seq
 
 

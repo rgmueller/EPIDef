@@ -30,14 +30,14 @@ def generate_traindata(x, y, input_size, batch_size, num_cams):
     # Generate image stacks
     for i in range(batch_size):
         # Variables for gray conversion
-        rand_3color = 0.05 + np.random.rand(3)
-        rand_3color = rand_3color/np.sum(rand_3color)
-        r = rand_3color[0]
-        g = rand_3color[1]
-        b = rand_3color[2]
-        # r = 0.299
-        # g = 0.587
-        # b = 0.114
+        # rand_3color = 0.05 + np.random.rand(3)
+        # rand_3color = rand_3color/np.sum(rand_3color)
+        # r = rand_3color[0]
+        # g = rand_3color[1]
+        # b = rand_3color[2]
+        r = 0.299
+        g = 0.587
+        b = 0.114
 
         # Since we always use 7x7 images the center view stays the same
         # Two image stacks are selected and gray-scaled
