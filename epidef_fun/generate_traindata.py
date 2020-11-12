@@ -51,7 +51,8 @@ def generate_traindata(x, y, input_size, batch_size, num_cams):
 
     x_hori = x_hori/255
     x_vert = x_vert/255
-
+    print(x_hori.max())
+    print(x_hori.min())
     return x_vert, x_hori, label
 
 
