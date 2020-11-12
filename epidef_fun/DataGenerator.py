@@ -47,5 +47,5 @@ class DataGenerator(keras.utils.Sequence):
 
         (x_vert, x_hori, y) = data_augmentation(x_vert, x_hori, y, self.batch_size)
         y_cat = keras.utils.to_categorical(y, num_classes=self.n_classes)
-        print(y_cat)
+        # print(y_cat)
         return ([x_vert, x_hori], y_cat)
