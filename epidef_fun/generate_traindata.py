@@ -74,6 +74,7 @@ def data_augmentation(x_vert, x_hori, traindata_labels, batch_size):
         x_vert[batch_i, :, :, :] = pow(x_vert[batch_i, :, :, :], gray_rand)
 
         rotation_or_transpose = np.random.randint(0, 6)
+        rotation_or_transpose = 0
         if rotation_or_transpose == 4:  # Transpose
             x_hori_tmp = np.copy(np.transpose(np.squeeze(x_hori[batch_i, :, :, :]), (1, 0, 2)))
             x_vert_tmp = np.copy(np.transpose(np.squeeze(x_vert[batch_i, :, :, :]), (1, 0, 2)))
@@ -100,6 +101,7 @@ def data_augmentation(x_vert, x_hori, traindata_labels, batch_size):
 
         roll = np.random.randint(-12, 13)
         translate = np.random.randint(0, 4)
+        translate = 0
         if translate == 1:  # translate x-direction
             x_vert_tmp = np.copy(np.roll(x_vert[batch_i, :, :, :], roll, axis=1))
             x_hori_tmp = np.copy(np.roll(x_hori[batch_i, :, :, :], roll, axis=1))
