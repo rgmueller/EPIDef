@@ -90,7 +90,7 @@ if __name__ == '__main__':
     # exponential_decay_fn = exponential_decay(0.01, 20)
     # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(exponential_decay_fn)
     model.fit(generator_train, epochs=200, max_queue_size=10, initial_epoch=iter00, verbose=2,
-              callbacks=checkpoint_cb)
+              callbacks=checkpoint_cb, validation_data=generator_test)
     iter00 += 1
 
     # Test after N*100 iterations
