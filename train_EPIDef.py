@@ -1,8 +1,5 @@
-import threading
 import os
-from sklearn.model_selection import train_test_split
 import datetime
-import time
 import numpy as np
 
 import tensorflow as tf
@@ -42,7 +39,6 @@ if __name__ == '__main__':
     print("Loading lightfield paths...")
     dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\Master_Project"
                      + "\\data_storage\\lightfields")
-    # dir_lf_images = "D:\\blender_output"
     list_IDs = get_list_IDs(dir_lf_images)
 
     print("Done loading lightfield paths.")
@@ -79,7 +75,6 @@ if __name__ == '__main__':
     generator_train = DataGenerator(list_IDs_train, batch_size=batch_size)
     generator_test = DataGenerator(list_IDs_test, batch_size=batch_size)
 
-    t0 = time.time()
     checkpoint_cb = tf.keras.callbacks.ModelCheckpoint("epidef_model.h5", save_best_only=True)
     early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
     # Try this out at some point:
@@ -98,6 +93,5 @@ if __name__ == '__main__':
     # model.predict([])
     save_path_file_new = f"{directory_ckp}\\iter{iter00:04d}.hdf5"
     model.save(save_path_file_new)
-    # for i, w in enumerate(model.weights): print(i, w.name)
-    # model.save('mymodel.hdf5')
+
     print("Weights saved.")
