@@ -49,7 +49,8 @@ def efficientnet():
 
     :return: seq:
     """
-    seq = efficientnet_model.EfficientNet()
+    seq = efficientnet_model.EfficientNet(overrides={'num_classes': 3, 'input_channels': 140,
+                                                     'rescale_input': False})
     return seq
 
 
