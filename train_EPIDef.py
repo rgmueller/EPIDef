@@ -40,7 +40,8 @@ if __name__ == '__main__':
     print("Loading lightfield paths...")
     dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\Master_Project"
                      + "\\data_storage\\lightfields")
-    list_IDs = get_list_IDs(dir_lf_images)
+    dir_lf_images = ("C:\\Users\\muell\\Desktop\\blender_output_tmp")
+    list_IDs = get_list_IDs(dir_lf_images)[:100]
 
     print("Done loading lightfield paths.")
     fraction = np.int(len(list_IDs)*0.7)
