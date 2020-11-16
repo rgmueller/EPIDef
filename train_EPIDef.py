@@ -34,7 +34,7 @@ if __name__ == '__main__':
     directory_t = f"epidef_output\\{network_name}"
     if not os.path.exists(directory_t):
         os.makedirs(directory_t)
-    txt_name = f"epidef_checkpoints\\lf_{network_name}.txt"
+    # txt_name = f"epidef_checkpoints\\lf_{network_name}.txt"
 
     # Load training data from lightfield .png files:
     print("Loading lightfield paths...")
@@ -69,7 +69,7 @@ if __name__ == '__main__':
             print(f"Network weights will be loaded from previous checkpoints {ckp_name}")
 
     # Write date & time
-    f1 = open(txt_name, 'a')
+    # f1 = open(txt_name, 'a')
     now = datetime.datetime.now()
     f1.write('\n' + str(now) + '\n\n')
     f1.close()
