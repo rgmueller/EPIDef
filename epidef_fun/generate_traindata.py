@@ -54,7 +54,7 @@ def generate_traindata(x, y, input_size, batch_size, num_cams):
     return x_vert, x_hori, label
 
 
-def data_augmentation(x_vert, x_hori, traindata_labels, batch_size):
+def data_augmentation(x_vert, x_hori, traindata_labels, batch_size, train=True):
     """
     Performs data augmentation. (Rotation, transpose, gamma)
 
@@ -62,6 +62,7 @@ def data_augmentation(x_vert, x_hori, traindata_labels, batch_size):
     :param x_vert: (batch_size, resX, rexY, num_cams)
     :param traindata_labels: (batch_size)
     :param batch_size: size of batch
+    :param train: turns on data augmentation
     :return: traindata_hori: (batch_size, resX, rexY, num_cams)
              traindata_vert: (batch_size, resX, rexY, num_cams)
              traindata_labels: (batch_size)
@@ -72,8 +73,10 @@ def data_augmentation(x_vert, x_hori, traindata_labels, batch_size):
         x_hori[batch_i, :, :, :] = pow(x_hori[batch_i, :, :, :], gray_rand)
         x_vert[batch_i, :, :, :] = pow(x_vert[batch_i, :, :, :], gray_rand)
 
-        rotation_or_transpose = np.random.randint(0, 6)
-        rotation_or_transpose = 0
+        if train:
+            rotation_or_transpose = np.random.randint(0, 6)
+        else:
+            rotation_or_transpose = 0
         if rotation_or_transpose == 4:  # Transpose
             x_hori_tmp = np.copy(np.transpose(np.squeeze(x_hori[batch_i, :, :, :]), (1, 0, 2)))
             x_vert_tmp = np.copy(np.transpose(np.squeeze(x_vert[batch_i, :, :, :]), (1, 0, 2)))
@@ -99,8 +102,10 @@ def data_augmentation(x_vert, x_hori, traindata_labels, batch_size):
             x_hori[batch_i, :, :, :] = x_vert_tmp
 
         roll = np.random.randint(-12, 13)
-        translate = np.random.randint(0, 4)
-        translate = 0
+        if train:
+            translate = np.random.randint(0, 4)
+        else:
+            translate = 0
         if translate == 1:  # translate x-direction
             x_vert_tmp = np.copy(np.roll(x_vert[batch_i, :, :, :], roll, axis=1))
             x_hori_tmp = np.copy(np.roll(x_hori[batch_i, :, :, :], roll, axis=1))
