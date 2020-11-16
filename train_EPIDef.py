@@ -38,9 +38,9 @@ if __name__ == '__main__':
 
     # Load training data from lightfield .png files:
     print("Loading lightfield paths...")
-    dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\Master_Project"
-                     + "\\data_storage\\lightfields")
-    # dir_lf_images = ("C:\\Users\\muell\\Desktop\\blender_output_tmp")
+    # dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\Master_Project"
+    #                  + "\\data_storage\\lightfields")
+    dir_lf_images = ("C:\\Users\\muell\\Desktop\\blender_output_tmp")
     list_IDs = get_list_IDs(dir_lf_images)[:100]
 
     print("Done loading lightfield paths.")
@@ -74,12 +74,12 @@ if __name__ == '__main__':
     f1.write('\n' + str(now) + '\n\n')
     f1.close()
 
-    generator_train = DataGenerator(list_IDs_train, batch_size=batch_size)
-    generator_test = DataGenerator(list_IDs_test, batch_size=batch_size)
+    generator_train = DataGenerator(list_IDs_train, batch_size=batch_size, train=False)
+    generator_test = DataGenerator(list_IDs_test, batch_size=batch_size, train=False)
 
     checkpoint_cb = tf.keras.callbacks.ModelCheckpoint("epidef_model.h5", save_best_only=True)
     early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
-    callbacks = [checkpoint_cb, keras.callbacks.TensorBoard(log_dir='./logs')]
+    callbacks = [checkpoint_cb]  # , keras.callbacks.TensorBoard(log_dir='./logs')]
     # Try this out at some point:
     # def exponential_decay(lr0, s):
     #     def exponential_decay_fn(epoch):
