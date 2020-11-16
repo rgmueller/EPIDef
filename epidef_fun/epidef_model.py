@@ -75,7 +75,6 @@ def define_epidef(sz_input1, sz_input2, view_n, filter_num):
 
     # Merge layers
     mid_merged = concatenate([mid_vert, mid_hori])
-
     mid_merged_ = efficientnet()
 
     output = mid_merged_(mid_merged)
