@@ -1,10 +1,9 @@
-import threading
 import os
-from sklearn.model_selection import train_test_split
 import datetime
-import time
 import numpy as np
 
+import tensorflow as tf
+from tensorflow import keras
 from epidef_fun.generate_traindata import generate_traindata, data_augmentation
 from epidef_fun.util import get_list_IDs
 from epidef_fun.epidef_model import define_epidef
@@ -21,11 +20,10 @@ if __name__ == '__main__':
         second layer: 6 convolutional blocks
         last layer:   1 dense block?
     """
-    model_conv_depth = 6  # 6 convolutional blocks for second
     model_filter_number = 70
     model_learning_rate = 1e-5
     batch_size = 1
-    input_res = 400
+    input_res = 236
 
     # Define directory for saving checkpoint files:
     directory_ckp = f"epidef_checkpoints\\{network_name}_ckp"
@@ -40,16 +38,16 @@ if __name__ == '__main__':
 
     # Load training data from lightfield .png files:
     print("Loading lightfield paths...")
-    dir_lf_images = ("C:\\Users\\rmueller\\Google Drive\\University\\Master_Project"
+    dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\Master_Project"
                      + "\\data_storage\\lightfields")
-    # dir_lf_images = "D:\\blender_output"
-    list_IDs = get_list_IDs(dir_lf_images)
+    dir_lf_images = ("C:\\Users\\muell\\Desktop\\blender_output_tmp")
+    list_IDs = get_list_IDs(dir_lf_images)[:100]
 
     print("Done loading lightfield paths.")
     fraction = np.int(len(list_IDs)*0.7)
     list_IDs_train, list_IDs_test = list_IDs[:fraction], list_IDs[fraction:]
 
-    model = define_epidef(input_res, input_res, 7, model_conv_depth, model_filter_number)
+    model = define_epidef(input_res, input_res, 7, model_filter_number)
 
     # Load latest checkpoint
     if load_weights:
@@ -76,11 +74,21 @@ if __name__ == '__main__':
     f1.write('\n' + str(now) + '\n\n')
     f1.close()
 
-    generator_train = DataGenerator(list_IDs_train, batch_size=1)
-    generator_test = DataGenerator(list_IDs_test, batch_size=1)
+    generator_train = DataGenerator(list_IDs_train, batch_size=batch_size)
+    generator_test = DataGenerator(list_IDs_test, batch_size=batch_size)
 
-    t0 = time.time()
-    model.fit(generator_train, epochs=10, max_queue_size=10, initial_epoch=iter00, verbose=1)
+    checkpoint_cb = tf.keras.callbacks.ModelCheckpoint("epidef_model.h5", save_best_only=True)
+    early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
+    callbacks = [checkpoint_cb, keras.callbacks.TensorBoard(log_dir='./logs')]
+    # Try this out at some point:
+    # def exponential_decay(lr0, s):
+    #     def exponential_decay_fn(epoch):
+    #         return lr0 * 0.1**(epoch/s)
+    #     return exponential_decay_fn
+    # exponential_decay_fn = exponential_decay(0.01, 20)
+    # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(exponential_decay_fn)
+    model.fit(generator_train, epochs=200, max_queue_size=10, initial_epoch=iter00, verbose=2,
+              callbacks=callbacks, validation_data=generator_test)
     iter00 += 1
 
     # Test after N*100 iterations
@@ -88,6 +96,5 @@ if __name__ == '__main__':
     # model.predict([])
     save_path_file_new = f"{directory_ckp}\\iter{iter00:04d}.hdf5"
     model.save(save_path_file_new)
-    # for i, w in enumerate(model.weights): print(i, w.name)
-    # model.save('mymodel.hdf5')
+
     print("Weights saved.")

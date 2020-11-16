@@ -30,14 +30,14 @@ def generate_traindata(x, y, input_size, batch_size, num_cams):
     # Generate image stacks
     for i in range(batch_size):
         # Variables for gray conversion
-        rand_3color = 0.05 + np.random.rand(3)
-        rand_3color = rand_3color/np.sum(rand_3color)
-        r = rand_3color[0]
-        g = rand_3color[1]
-        b = rand_3color[2]
-        # r = 0.299
-        # g = 0.587
-        # b = 0.114
+        # rand_3color = 0.05 + np.random.rand(3)
+        # rand_3color = rand_3color/np.sum(rand_3color)
+        # r = rand_3color[0]
+        # g = rand_3color[1]
+        # b = rand_3color[2]
+        r = 0.299
+        g = 0.587
+        b = 0.114
 
         # Since we always use 7x7 images the center view stays the same
         # Two image stacks are selected and gray-scaled
@@ -51,7 +51,6 @@ def generate_traindata(x, y, input_size, batch_size, num_cams):
 
     x_hori = x_hori/255
     x_vert = x_vert/255
-
     return x_vert, x_hori, label
 
 
@@ -73,7 +72,8 @@ def data_augmentation(x_vert, x_hori, traindata_labels, batch_size):
         x_hori[batch_i, :, :, :] = pow(x_hori[batch_i, :, :, :], gray_rand)
         x_vert[batch_i, :, :, :] = pow(x_vert[batch_i, :, :, :], gray_rand)
 
-        rotation_or_transpose = np.random.randint(0, 5)
+        rotation_or_transpose = np.random.randint(0, 6)
+        rotation_or_transpose = 0
         if rotation_or_transpose == 4:  # Transpose
             x_hori_tmp = np.copy(np.transpose(np.squeeze(x_hori[batch_i, :, :, :]), (1, 0, 2)))
             x_vert_tmp = np.copy(np.transpose(np.squeeze(x_vert[batch_i, :, :, :]), (1, 0, 2)))
@@ -97,6 +97,28 @@ def data_augmentation(x_vert, x_hori, traindata_labels, batch_size):
             x_vert_tmp = np.copy(np.rot90(x_vert[batch_i, :, :, :], 3, (0, 1)))
             x_vert[batch_i, :, :, :] = x_hori_tmp[:, :, ::-1]
             x_hori[batch_i, :, :, :] = x_vert_tmp
+
+        roll = np.random.randint(-12, 13)
+        translate = np.random.randint(0, 4)
+        translate = 0
+        if translate == 1:  # translate x-direction
+            x_vert_tmp = np.copy(np.roll(x_vert[batch_i, :, :, :], roll, axis=1))
+            x_hori_tmp = np.copy(np.roll(x_hori[batch_i, :, :, :], roll, axis=1))
+            x_vert[batch_i, :, :, :] = x_vert_tmp
+            x_hori[batch_i, :, :, :] = x_hori_tmp
+
+        if translate == 2:  # translate y-direction
+            x_vert_tmp = np.copy(np.roll(x_vert[batch_i, :, :, :], roll, axis=0))
+            x_hori_tmp = np.copy(np.roll(x_hori[batch_i, :, :, :], roll, axis=0))
+            x_vert[batch_i, :, :, :] = x_vert_tmp
+            x_hori[batch_i, :, :, :] = x_hori_tmp
+
+        if translate == 3:  # translate diagonally
+            x_vert_tmp = np.copy(np.roll(x_vert[batch_i, :, :, :], roll, axis=(0, 1)))
+            x_hori_tmp = np.copy(np.roll(x_hori[batch_i, :, :, :], roll, axis=(0, 1)))
+            x_vert[batch_i, :, :, :] = x_vert_tmp
+            x_hori[batch_i, :, :, :] = x_hori_tmp
+
     return x_vert, x_hori, traindata_labels
 
 
