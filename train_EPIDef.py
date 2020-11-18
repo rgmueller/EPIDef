@@ -71,8 +71,6 @@ if __name__ == '__main__':
     # Write date & time
     # f1 = open(txt_name, 'a')
     now = datetime.datetime.now()
-    f1.write('\n' + str(now) + '\n\n')
-    f1.close()
 
     generator_train = DataGenerator(list_IDs_train, batch_size=batch_size, train=False)
     generator_test = DataGenerator(list_IDs_test, batch_size=batch_size, train=False)
@@ -98,7 +96,7 @@ if __name__ == '__main__':
     # Test after N*100 iterations
     weight_tmp1 = model.get_weights()
     # model.predict([])
-    save_path_file_new = f"{directory_ckp}\\iter{iter00:04d}.hdf5"
+    save_path_file_new = f"{directory_ckp}\\after_last_epoch.hdf5"
     model.save(save_path_file_new)
 
     print("Weights saved.")
