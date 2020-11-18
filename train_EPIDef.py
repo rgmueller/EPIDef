@@ -71,8 +71,6 @@ if __name__ == '__main__':
     # Write date & time
     # f1 = open(txt_name, 'a')
     now = datetime.datetime.now()
-    f1.write('\n' + str(now) + '\n\n')
-    f1.close()
 
     generator_train = DataGenerator(list_IDs_train, batch_size=batch_size, train=False)
     generator_test = DataGenerator(list_IDs_test, batch_size=batch_size, train=False)
