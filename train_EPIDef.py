@@ -87,9 +87,13 @@ if __name__ == '__main__':
     #     return exponential_decay_fn
     # exponential_decay_fn = exponential_decay(0.01, 20)
     # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(exponential_decay_fn)
-    model.fit(generator_train, epochs=200, max_queue_size=10, initial_epoch=iter00, verbose=2,
-              callbacks=callbacks, validation_data=generator_test)
-    iter00 += 1
+    model.fit(generator_train,
+              epochs=200,
+              max_queue_size=10,
+              initial_epoch=0,
+              verbose=2,
+              callbacks=callbacks,
+              validation_data=generator_test)
 
     # Test after N*100 iterations
     weight_tmp1 = model.get_weights()

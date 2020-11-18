@@ -20,24 +20,37 @@ def layer1_multistream(res_x, res_y, num_cams, filter_num):
         layer1_multistream.instance = 0
     j = layer1_multistream.instance
     seq = Sequential()
-    seq.add(Conv2D(filter_num, (3, 3), input_shape=(res_x, res_y, num_cams),
-                   padding='valid', name=f'S1_C10_{j}', activation='relu'))
-    seq.add(Conv2D(filter_num, (3, 3), input_shape=(res_x-2, res_y-2, 70),
+    seq.add(Conv2D(filter_num, (3, 3),
+                   input_shape=(res_x, res_y, num_cams),
+                   padding='valid', name=f'S1_C10_{j}',
+                   activation='relu'))
+    seq.add(Conv2D(filter_num, (3, 3),
+                   input_shape=(res_x-2, res_y-2, 70),
                    padding='valid', name=f'S1_C20_{j}'))
     seq.add(BatchNormalization(axis=-1, name=f'S1_BN0_{j}'))
     seq.add(Activation('relu'))
 
-    seq.add(Conv2D(filter_num, (3, 3), input_shape=(res_x-4, res_y-4, 70),
-                   padding='valid', name=f'S1_C11_{j}', activation='relu'))
-    seq.add(Conv2D(filter_num, (3, 3), input_shape=(res_x-6, res_y-6, 70),
-                   padding='valid', name=f'S1_C21_{j}'))
+    seq.add(Conv2D(filter_num, (3, 3),
+                   input_shape=(res_x-4, res_y-4, 70),
+                   padding='valid',
+                   name=f'S1_C11_{j}',
+                   activation='relu'))
+    seq.add(Conv2D(filter_num, (3, 3),
+                   input_shape=(res_x-6, res_y-6, 70),
+                   padding='valid',
+                   name=f'S1_C21_{j}'))
     seq.add(BatchNormalization(axis=-1, name=f'S1_BN1_{j}'))
     seq.add(Activation('relu'))
 
-    seq.add(Conv2D(filter_num, (3, 3), input_shape=(res_x-8, res_y-8, 70),
-                   padding='valid', name=f'S1_C12_{j}', activation='relu'))
-    seq.add(Conv2D(filter_num, (3, 3), input_shape=(res_x-10, res_y-10, 70),
-                   padding='valid', name=f'S1_C22_{j}'))
+    seq.add(Conv2D(filter_num, (3, 3),
+                   input_shape=(res_x-8, res_y-8, 70),
+                   padding='valid',
+                   name=f'S1_C12_{j}',
+                   activation='relu'))
+    seq.add(Conv2D(filter_num, (3, 3),
+                   input_shape=(res_x-10, res_y-10, 70),
+                   padding='valid',
+                   name=f'S1_C22_{j}'))
     seq.add(BatchNormalization(axis=-1, name=f'S1_BN2_{j}'))
     seq.add(Activation('relu'))
     layer1_multistream.instance += 1
@@ -50,7 +63,8 @@ def efficientnet():
 
     :return: seq:
     """
-    seq = efficientnet_model.EfficientNet(overrides={'num_classes': 3, 'input_channels': 140,
+    seq = efficientnet_model.EfficientNet(overrides={'num_classes': 3,
+                                                     'input_channels': 140,
                                                      'rescale_input': False})
     return seq
 
