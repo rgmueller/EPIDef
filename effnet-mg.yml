@@ -133,4 +133,3 @@ dependencies:
     - webencodings==0.5.1
     - werkzeug==1.0.1
     - wrapt==1.12.1
-prefix: C:\Users\muell\anaconda3\envs\effnet-mg
