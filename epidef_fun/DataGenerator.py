@@ -6,12 +6,12 @@ from epidef_fun.generate_traindata import generate_traindata, data_augmentation
 
 class DataGenerator(keras.utils.Sequence):
     """Generates data for Keras"""
-    def __init__(self, list_IDs, batch_size=1, dim=(400, 400, 7),
+    def __init__(self, list_ids, batch_size=1, dim=(400, 400, 7),
                  n_classes=3, shuffle=True, train=True):
-        'Initialization'
+        """Initialization"""
         self.dim = dim
         self.batch_size = batch_size
-        self.list_IDs = list_IDs
+        self.list_IDs = list_ids
         self.n_classes = n_classes
         self.shuffle = shuffle
         self.train = train
@@ -27,23 +27,23 @@ class DataGenerator(keras.utils.Sequence):
         indexes = self.indexes[index*self.batch_size:(index+1)*self.batch_size]
 
         # Find list of IDs
-        list_IDs_temp = [self.list_IDs[k] for k in indexes]
+        list_ids_temp = [self.list_IDs[k] for k in indexes]
 
         # Generate data
-        x, y = self.__data_generation(list_IDs_temp)
+        x, y = self.__data_generation(list_ids_temp)
 
         return x, y
 
     def on_epoch_end(self):
         """Updates indexes after each epoch"""
         self.indexes = np.arange(len(self.list_IDs))
-        if self.shuffle == True:
+        if self.shuffle:
             np.random.shuffle(self.indexes)
 
-    def __data_generation(self, list_IDs_temp):
+    def __data_generation(self, list_ids_temp):
         """Generates data containing batch_size samples"""  # X : (n_samples, *dim, n_channels)
         # Generate data
-        x, y = load_lightfield_data(list_IDs_temp, 224)
+        x, y = load_lightfield_data(list_ids_temp, 224)
         (x_vert, x_hori, y) = generate_traindata(x, y, 224, self.batch_size, 7)
 
         (x_vert, x_hori, y) = data_augmentation(x_vert, x_hori, y, self.batch_size, self.train)
