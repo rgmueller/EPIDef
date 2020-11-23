@@ -36,27 +36,27 @@ def data_augmentation(x, traindata_labels, batch_size, train=True):
     """
     for batch_i in range(batch_size):
         gray_rand = 0.4 * np.random.rand()+0.8
-        roll = np.random.randint(-12, 13)
+        roll = np.random.randint(-10, 11)
         if train:
             x[batch_i, :, :, :] = pow(x[batch_i, :, :, :], gray_rand)
-            translate = np.random.randint(0, 4)
+            translate = np.random.randint(0, 3)
         else:
             translate = 0
-        if translate == 1:  # translate x-direction
+        if translate == 0:  # translate x-direction
             x_tmp = np.copy(np.roll(x[batch_i, :, :, :], roll, axis=0))
             x[batch_i, :, :, :] = x_tmp
 
-        if translate == 2:  # translate y-direction
+        if translate == 1:  # translate y-direction
             x_tmp = np.copy(np.roll(x[batch_i, :, :, :], roll, axis=1))
             x[batch_i, :, :, :] = x_tmp
 
-        if translate == 3:  # translate diagonally
+        if translate == 2:  # translate diagonally
             x_tmp = np.copy(np.roll(x[batch_i, :, :, :], roll, axis=(0, 1)))
             x[batch_i, :, :, :] = x_tmp
 
         if train:
-            x_tmp = np.copy(ndimage.rotate(x[batch_i, :, :, :], np.random.randint(-15, 15),
-                                           reshape=False, mode='mirror'))
+            x_tmp = np.copy(ndimage.rotate(x[batch_i, :, :, :], np.random.randint(-14, 15),
+                                           reshape=False, mode='wrap'))
             x[batch_i, :, :, :] = x_tmp
 
     return x, traindata_labels
