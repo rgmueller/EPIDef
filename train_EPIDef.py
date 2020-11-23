@@ -54,7 +54,8 @@ if __name__ == '__main__':
     generator_train = DataGenerator(list_IDs_train, batch_size=batch_size, train=False)
     generator_test = DataGenerator(list_IDs_test, batch_size=batch_size, train=False)
 
-    checkpoint_cb = tf.keras.callbacks.ModelCheckpoint("epidef_model.h5", save_best_only=True)
+    checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(f"{directory_ckp}\\epidef_model.h5",
+                                                       save_best_only=True)
     early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
     callbacks = [checkpoint_cb]  # , keras.callbacks.TensorBoard(log_dir='./logs')]
     # Try this out at some point:
