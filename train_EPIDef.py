@@ -15,8 +15,7 @@ if __name__ == '__main__':
     """
     Model parameters:
         first layer:  3 convolutional blocks
-        second layer: 6 convolutional blocks
-        last layer:   1 dense block?
+        second layer: modified EfficientNet
     """
     model_filter_number = 70
     model_learning_rate = 1e-5
@@ -36,10 +35,10 @@ if __name__ == '__main__':
 
     # Load training data from lightfield .png files:
     print("Loading lightfield paths...")
-    # dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\Master_Project"
-    #                  + "\\data_storage\\lightfields")
-    dir_lf_images = "C:\\Users\\muell\\Desktop\\blender_output_tmp"
-    list_IDs = get_list_ids(dir_lf_images)[:100]
+    dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\Master_Project"
+                     + "\\data_storage\\lightfields")
+    # dir_lf_images = "C:\\Users\\muell\\Desktop\\blender_output_tmp"
+    list_IDs = get_list_ids(dir_lf_images)
 
     print("Done loading lightfield paths.")
     fraction = np.int(len(list_IDs)*0.7)
