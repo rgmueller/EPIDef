@@ -57,15 +57,29 @@ def layer1_multistream(res_x, res_y, num_cams, filter_num):
     return seq
 
 
-def efficientnet():
+def efficientnet(filter_num):
     """
     Merged layer: Conv - ReLU - Conv - ReLU - BN
 
     :return: seq:
     """
+    block_config = efficientnet_model.BlockConfig()
+
+    blocks = (  # (input_filters, output_filters, kernel_size, num_repeat,
+        #  expand_ratio, strides, se_ratio)
+        block_config.from_args(140, 70, 3, 1, 1, (1, 1), 0.25),
+        block_config.from_args(70, 50, 3, 2, 6, (2, 2), 0.25),
+        block_config.from_args(50, 40, 5, 2, 6, (2, 2), 0.25),
+        block_config.from_args(40, 80, 3, 3, 6, (2, 2), 0.25),
+        block_config.from_args(80, 112, 5, 3, 6, (1, 1), 0.25),
+        block_config.from_args(112, 192, 5, 4, 6, (2, 2), 0.25),
+        block_config.from_args(192, 320, 3, 1, 6, (1, 1), 0.25),
+    )
     seq = efficientnet_model.EfficientNet(overrides={'num_classes': 3,
-                                                     'input_channels': 140,
-                                                     'rescale_input': False})
+                                                     'input_channels': filter_num*2,
+                                                     'rescale_input': False,
+                                                     'blocks': blocks,
+                                                     'stem_base_filters': 140})
     return seq
 
 
@@ -89,7 +103,7 @@ def define_epidef(sz_input1, sz_input2, view_n, filter_num):
 
     # Merge layers
     mid_merged = concatenate([mid_vert, mid_hori])
-    mid_merged_ = efficientnet()
+    mid_merged_ = efficientnet(filter_num)
 
     output = mid_merged_(mid_merged)
     model_512 = Model(inputs=[input_stack_vert, input_stack_hori], outputs=[output])
