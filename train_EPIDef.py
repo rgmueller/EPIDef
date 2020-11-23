@@ -1,5 +1,3 @@
-# import os
-import datetime
 import numpy as np
 
 import tensorflow as tf
@@ -21,14 +19,14 @@ if __name__ == '__main__':
     model_filter_number = 70
     model_learning_rate = 1e-5
     batch_size = 1
-    input_res = 236
+    input_res = 224
 
     # Load training data from lightfield .png files:
     print("Loading lightfield paths...")
     dir_lf_images = ("C:\\Users\\rmueller\\Google Drive\\University\\Master_Project"
                      + "\\data_storage\\lightfields")
     # dir_lf_images = "C:\\Users\\muell\\Desktop\\blender_output_tmp"
-    list_IDs = get_list_ids(dir_lf_images)[:100]
+    list_IDs = get_list_ids(dir_lf_images)
 
     print("Done loading lightfield paths.")
     fraction = np.int(len(list_IDs)*0.7)
@@ -36,11 +34,7 @@ if __name__ == '__main__':
 
     model = define_epidef(input_res, input_res)
 
-    # Write date & time
-    # f1 = open(txt_name, 'a')
-    now = datetime.datetime.now()
-
-    generator_train = DataGenerator(list_IDs_train, batch_size=batch_size, train=False)
+    generator_train = DataGenerator(list_IDs_train, batch_size=batch_size, train=True)
     generator_test = DataGenerator(list_IDs_test, batch_size=batch_size, train=False)
 
     early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
@@ -59,11 +53,3 @@ if __name__ == '__main__':
               verbose=2,
               # callbacks=callbacks,
               validation_data=generator_test)
-
-    # Test after N*100 iterations
-    # weight_tmp1 = model.get_weights()
-    # # model.predict([])
-    # save_path_file_new = f"{directory_ckp}\\after_last_epoch.hdf5"
-    # model.save(save_path_file_new)
-
-    print("Weights saved.")
