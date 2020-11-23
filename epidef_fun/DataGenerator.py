@@ -6,7 +6,7 @@ from epidef_fun.generate_traindata import generate_traindata, data_augmentation
 
 class DataGenerator(keras.utils.Sequence):
     """Generates data for Keras"""
-    def __init__(self, list_ids, batch_size=1, dim=(400, 400, 7),
+    def __init__(self, list_ids, batch_size=1, dim=(400, 400, 14),
                  n_classes=3, shuffle=True, train=True):
         """Initialization"""
         self.dim = dim
@@ -31,7 +31,6 @@ class DataGenerator(keras.utils.Sequence):
 
         # Generate data
         x, y = self.__data_generation(list_ids_temp)
-
         return x, y
 
     def on_epoch_end(self):
@@ -44,7 +43,7 @@ class DataGenerator(keras.utils.Sequence):
         """Generates data containing batch_size samples"""  # X : (n_samples, *dim, n_channels)
         # Generate data
         x, y = load_lightfield_data(list_ids_temp, 224)
-        x, y = generate_traindata(x, y, 224, self.batch_size, 7)
+        x, y = generate_traindata(x, y, 224, self.batch_size, 14)
 
         x, y = data_augmentation(x, y, self.batch_size, self.train)
         y_cat = keras.utils.to_categorical(y, num_classes=self.n_classes)
