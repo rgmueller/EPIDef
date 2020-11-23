@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from epidef_fun.generate_traindata import generate_traindata, data_augmentation
-from epidef_fun.util import get_list_IDs
+from epidef_fun.util import get_list_ids
 from epidef_fun.epidef_model import define_epidef
 from epidef_fun.DataGenerator import DataGenerator
 
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\Master_Project"
     #                  + "\\data_storage\\lightfields")
     dir_lf_images = ("C:\\Users\\muell\\Desktop\\blender_output_tmp")
-    list_IDs = get_list_IDs(dir_lf_images)[:100]
+    list_IDs = get_list_ids(dir_lf_images)[:100]
 
     print("Done loading lightfield paths.")
     fraction = np.int(len(list_IDs)*0.7)
