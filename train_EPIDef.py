@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     # Load training data from lightfield .png files:
     print("Loading lightfield paths...")
-    dir_lf_images = ("C:\\Users\\rmueller\\Google Drive\\University\\Master_Project"
+    dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\Master_Project"
                      + "\\data_storage\\lightfields")
     # dir_lf_images = "C:\\Users\\muell\\Desktop\\blender_output_tmp"
     list_IDs = get_list_ids(dir_lf_images)
