@@ -37,8 +37,8 @@ if __name__ == '__main__':
     generator_train = DataGenerator(list_IDs_train, batch_size=batch_size, train=True)
     generator_test = DataGenerator(list_IDs_test, batch_size=batch_size, train=False)
 
-    early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
-    # callbacks = [checkpoint_cb]  # , keras.callbacks.TensorBoard(log_dir='./logs')]
+    early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=20, restore_best_weights=True)
+    callbacks = [early_stopping_cb]  # , keras.callbacks.TensorBoard(log_dir='./logs')]
     # Try this out at some point:
     # def exponential_decay(lr0, s):
     #     def exponential_decay_fn(epoch):
@@ -47,9 +47,9 @@ if __name__ == '__main__':
     # exponential_decay_fn = exponential_decay(0.01, 20)
     # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(exponential_decay_fn)
     model.fit(generator_train,
-              epochs=100,
+              epochs=150,
               max_queue_size=10,
               initial_epoch=0,
               verbose=2,
-              # callbacks=callbacks,
+              callbacks=callbacks,
               validation_data=generator_test)
