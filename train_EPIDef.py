@@ -47,7 +47,7 @@ if __name__ == '__main__':
     # exponential_decay_fn = exponential_decay(0.01, 20)
     # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(exponential_decay_fn)
     model.fit(generator_train,
-              epochs=100,
+              epochs=150,
               max_queue_size=10,
               initial_epoch=0,
               verbose=2,
