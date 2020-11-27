@@ -38,7 +38,7 @@ def data_augmentation(x, traindata_labels, batch_size, train=True):
         gray_rand = 0.4 * np.random.rand()+0.8
         roll = np.random.randint(-10, 11)
         if train:
-            x[batch_i, :, :, :] = pow(x[batch_i, :, :, :], gray_rand)
+            # x[batch_i, :, :, :] = pow(x[batch_i, :, :, :], gray_rand)
             translate = np.random.randint(0, 3)
         else:
             translate = 0
