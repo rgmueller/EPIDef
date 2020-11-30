@@ -3,7 +3,8 @@ import numpy as np
 
 def generate_traindata(x, y, input_size, batch_size, num_cams):
     """
-    Generates training data using LF images and disparity maps by randomly chosen variables.
+    Generates training data using LF images and disparity maps by
+    randomly chosen variables.
 
     :param x: (#LF, resX, resY, hori_or_vert, num_cams, RGB)
     :param y: (#LF)
@@ -14,10 +15,7 @@ def generate_traindata(x, y, input_size, batch_size, num_cams):
              x_vert: (batch_size, rexX, resY, num_cams)
              label: (batch_size)
              
-    1. Gray image: random R,G,B --> R*img_R + G*img_G + B*img_B
-    2. patch-wise learning: random x,y  --> LFimage[x:x+size1,y:y+size2]
-    3. scale augmentation: scale 1,2,3  --> ex> LFimage[x:x+2*size1:2,y:y+2*size2:2]
-    (not sure if 2. and 3. are applicable for defect detection)
+    Gray image: random R,G,B --> R*img_R + G*img_G + B*img_B
     """
 
     # Initialize image stack and labels
@@ -54,7 +52,8 @@ def generate_traindata(x, y, input_size, batch_size, num_cams):
     return x_vert, x_hori, label
 
 
-def data_augmentation(x_vert, x_hori, traindata_labels, batch_size, train=True):
+def data_augmentation(x_vert, x_hori, traindata_labels,
+                      batch_size, train=True):
     """
     Performs data augmentation. (Rotation, transpose, gamma)
 
@@ -78,20 +77,26 @@ def data_augmentation(x_vert, x_hori, traindata_labels, batch_size, train=True):
         else:
             translate = 0
         if translate == 0:  # translate x-direction
-            x_vert_tmp = np.copy(np.roll(x_vert[batch_i, :, :, :], roll, axis=1))
-            x_hori_tmp = np.copy(np.roll(x_hori[batch_i, :, :, :], roll, axis=1))
+            x_vert_tmp = np.copy(np.roll(x_vert[batch_i, :, :, :],
+                                         roll, axis=1))
+            x_hori_tmp = np.copy(np.roll(x_hori[batch_i, :, :, :],
+                                         roll, axis=1))
             x_vert[batch_i, :, :, :] = x_vert_tmp
             x_hori[batch_i, :, :, :] = x_hori_tmp
 
         if translate == 1:  # translate y-direction
-            x_vert_tmp = np.copy(np.roll(x_vert[batch_i, :, :, :], roll, axis=0))
-            x_hori_tmp = np.copy(np.roll(x_hori[batch_i, :, :, :], roll, axis=0))
+            x_vert_tmp = np.copy(np.roll(x_vert[batch_i, :, :, :],
+                                         roll, axis=0))
+            x_hori_tmp = np.copy(np.roll(x_hori[batch_i, :, :, :],
+                                         roll, axis=0))
             x_vert[batch_i, :, :, :] = x_vert_tmp
             x_hori[batch_i, :, :, :] = x_hori_tmp
 
         if translate == 2:  # translate diagonally
-            x_vert_tmp = np.copy(np.roll(x_vert[batch_i, :, :, :], roll, axis=(0, 1)))
-            x_hori_tmp = np.copy(np.roll(x_hori[batch_i, :, :, :], roll, axis=(0, 1)))
+            x_vert_tmp = np.copy(np.roll(x_vert[batch_i, :, :, :],
+                                         roll, axis=(0, 1)))
+            x_hori_tmp = np.copy(np.roll(x_hori[batch_i, :, :, :],
+                                         roll, axis=(0, 1)))
             x_vert[batch_i, :, :, :] = x_vert_tmp
             x_hori[batch_i, :, :, :] = x_hori_tmp
 
@@ -100,8 +105,10 @@ def data_augmentation(x_vert, x_hori, traindata_labels, batch_size, train=True):
         else:
             rotation_or_transpose = 0
         if rotation_or_transpose == 4:  # Transpose
-            x_hori_tmp = np.copy(np.transpose(np.squeeze(x_hori[batch_i, :, :, :]), (1, 0, 2)))
-            x_vert_tmp = np.copy(np.transpose(np.squeeze(x_vert[batch_i, :, :, :]), (1, 0, 2)))
+            x_hori_tmp = np.copy(np.transpose(
+                np.squeeze(x_hori[batch_i, :, :, :]), (1, 0, 2)))
+            x_vert_tmp = np.copy(np.transpose(
+                np.squeeze(x_vert[batch_i, :, :, :]), (1, 0, 2)))
             x_hori[batch_i, :, :, :] = np.copy(x_vert_tmp[:, :, ::-1])
             x_vert[batch_i, :, :, :] = np.copy(x_hori_tmp[:, :, ::-1])
 
@@ -128,12 +135,13 @@ def data_augmentation(x_vert, x_hori, traindata_labels, batch_size, train=True):
 
 def generate_testdata(x, y, num_cams):
     input_size = 512
-    testdata_vert = np.zeros((len(y), input_size, input_size, num_cams), dtype=np.float32)
-    testdata_hori = np.zeros((len(y), input_size, input_size, num_cams), dtype=np.float32)
+    testdata_vert = np.zeros((len(y), input_size, input_size, num_cams),
+                             dtype=np.float32)
+    testdata_hori = np.zeros((len(y), input_size, input_size, num_cams),
+                             dtype=np.float32)
     testdata_batch_label = np.zeros(len(y))
 
     for ii in range(len(y)):
-        # These are the values from the paper, not sure why they were chosen like this
         r = 0.299
         g = 0.587
         b = 0.114
@@ -141,10 +149,12 @@ def generate_testdata(x, y, num_cams):
         image_id = ii
         testdata_vert[ii, :, :, :] = (r * x[image_id, :, :, 1, :, 0]
                                       + g * x[image_id, :, :, 1, :, 1]
-                                      + b * x[image_id, :, :, 1, :, 2]).astype('float32')
+                                      + b * x[image_id, :, :, 1, :, 2]
+                                      ).astype('float32')
         testdata_hori[ii, :, :, :] = (r * x[image_id, :, :, 0, :, 0]
                                       + g * x[image_id, :, :, 0, :, 1]
-                                      + b * x[image_id, :, :, 0, :, 2]).astype('float32')
+                                      + b * x[image_id, :, :, 0, :, 2]
+                                      ).astype('float32')
         testdata_batch_label[ii] = y[image_id]
 
     testdata_hori = testdata_hori/255

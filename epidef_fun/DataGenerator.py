@@ -41,12 +41,14 @@ class DataGenerator(keras.utils.Sequence):
             np.random.shuffle(self.indexes)
 
     def __data_generation(self, list_ids_temp):
-        """Generates data containing batch_size samples"""  # X : (n_samples, *dim, n_channels)
+        """Generates data containing batch_size samples"""
+        # X : (n_samples, *dim, n_channels)
         # Generate data
         x, y = load_lightfield_data(list_ids_temp, 224)
         (x_vert, x_hori, y) = generate_traindata(x, y, 224, self.batch_size, 7)
 
-        (x_vert, x_hori, y) = data_augmentation(x_vert, x_hori, y, self.batch_size, self.train)
+        (x_vert, x_hori, y) = data_augmentation(x_vert, x_hori, y,
+                                                self.batch_size, self.train)
         y_cat = keras.utils.to_categorical(y, num_classes=self.n_classes)
         # print(y_cat)
         return ([x_vert, x_hori], y_cat)

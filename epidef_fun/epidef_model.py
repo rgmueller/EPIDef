@@ -75,11 +75,12 @@ def efficientnet(filter_num):
         block_config.from_args(112, 192, 5, 4, 6, (2, 2), 0.25),
         block_config.from_args(192, 320, 3, 1, 6, (1, 1), 0.25),
     )
-    seq = efficientnet_model.EfficientNet(overrides={'num_classes': 3,
-                                                     'input_channels': filter_num*2,
-                                                     'rescale_input': False,
-                                                     'blocks': blocks,
-                                                     'stem_base_filters': 140})
+    seq = efficientnet_model.EfficientNet(overrides=
+                                          {'num_classes': 3,
+                                           'input_channels': filter_num*2,
+                                           'rescale_input': False,
+                                           'blocks': blocks,
+                                           'stem_base_filters': 140})
     return seq
 
 
@@ -94,22 +95,28 @@ def define_epidef(sz_input1, sz_input2, view_n, filter_num):
     :return:
     """
     # 2-Input: Conv - ReLU - Conv - ReLU - BN
-    input_stack_vert = Input(shape=(sz_input1, sz_input2, view_n), name='input_stack_vert')
-    input_stack_hori = Input(shape=(sz_input1, sz_input2, view_n), name='input_stack_hori')
+    input_stack_vert = Input(shape=(sz_input1, sz_input2, view_n),
+                             name='input_stack_vert')
+    input_stack_hori = Input(shape=(sz_input1, sz_input2, view_n),
+                             name='input_stack_hori')
 
     # 2-Stream layer: Conv - ReLU - Conv - ReLU - BN
-    mid_vert = layer1_multistream(sz_input1, sz_input2, view_n, filter_num)(input_stack_vert)
-    mid_hori = layer1_multistream(sz_input1, sz_input2, view_n, filter_num)(input_stack_hori)
+    mid_vert = layer1_multistream(sz_input1, sz_input2,
+                                  view_n, filter_num)(input_stack_vert)
+    mid_hori = layer1_multistream(sz_input1, sz_input2,
+                                  view_n, filter_num)(input_stack_hori)
 
     # Merge layers
     mid_merged = concatenate([mid_vert, mid_hori])
     mid_merged_ = efficientnet(filter_num)
 
     output = mid_merged_(mid_merged)
-    model_512 = Model(inputs=[input_stack_vert, input_stack_hori], outputs=[output])
+    model_512 = Model(inputs=[input_stack_vert, input_stack_hori],
+                      outputs=[output])
     metrics = ['accuracy',
                tf.keras.metrics.Precision(name='precision'),
                tf.keras.metrics.Recall(name='recall')]
-    model_512.compile(loss='categorical_crossentropy', optimizer='adam', metrics=metrics)
+    model_512.compile(loss='categorical_crossentropy', optimizer='adam',
+                      metrics=metrics)
     model_512.summary()
     return model_512

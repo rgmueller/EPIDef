@@ -35,9 +35,11 @@ if __name__ == '__main__':
 
     # Load training data from lightfield .png files:
     print("Loading lightfield paths...")
-    # dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\Master_Project"
+    # dir_lf_images = ("C:\\Users\\muell\\Google Drive"
+    #                  + "\\University\\Master_Project"
     #                  + "\\data_storage\\lightfields")
-    dir_lf_images = "C:\\Users\\rmueller\\Desktop\\1part_1background_halfbaseline"
+    dir_lf_images = ("C:\\Users\\rmueller\\Desktop\\"
+                     + "1part_1background_halfbaseline")
     list_IDs = get_list_ids(dir_lf_images)
 
     print("Done loading lightfield paths.")
@@ -50,20 +52,29 @@ if __name__ == '__main__':
     # f1 = open(txt_name, 'a')
     now = datetime.datetime.now()
 
-    generator_train = DataGenerator(list_IDs_train, batch_size=batch_size, train=False)
-    generator_test = DataGenerator(list_IDs_test, batch_size=batch_size, train=False)
+    generator_train = DataGenerator(list_IDs_train,
+                                    batch_size=batch_size,
+                                    train=False)
+    generator_test = DataGenerator(list_IDs_test,
+                                   batch_size=batch_size,
+                                   train=False)
 
-    checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(f"{directory_ckp}\\epidef_model.h5",
-                                                       save_best_only=True)
-    early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
-    callbacks = [checkpoint_cb]  # , keras.callbacks.TensorBoard(log_dir='./logs')]
+    checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
+                                        f"{directory_ckp}\\epidef_model.h5",
+                                        save_best_only=True)
+    early_stopping_cb = tf.keras.callbacks.EarlyStopping(
+                                            patience=10,
+                                            restore_best_weights=True)
+    callbacks = [checkpoint_cb]
+    # , keras.callbacks.TensorBoard(log_dir='./logs')]
     # Try this out at some point:
     # def exponential_decay(lr0, s):
     #     def exponential_decay_fn(epoch):
     #         return lr0 * 0.1**(epoch/s)
     #     return exponential_decay_fn
     # exponential_decay_fn = exponential_decay(0.01, 20)
-    # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(exponential_decay_fn)
+    # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(
+    #                                               exponential_decay_fn)
     model.fit(generator_train,
               epochs=200,
               max_queue_size=10,
