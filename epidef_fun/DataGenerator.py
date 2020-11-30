@@ -40,7 +40,8 @@ class DataGenerator(keras.utils.Sequence):
             np.random.shuffle(self.indexes)
 
     def __data_generation(self, list_ids_temp):
-        """Generates data containing batch_size samples"""  # X : (n_samples, *dim, n_channels)
+        """Generates data containing batch_size samples"""
+        # X : (n_samples, *dim, n_channels)
         # Generate data
         x, y = load_lightfield_data(list_ids_temp, 224)
         x, y = generate_traindata(x, y, 224, self.batch_size, 14)

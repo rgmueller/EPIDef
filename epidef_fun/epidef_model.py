@@ -49,6 +49,8 @@ def define_epidef(sz_input1, sz_input2):
     metrics = ['accuracy',
                tf.keras.metrics.Precision(name='precision'),
                tf.keras.metrics.Recall(name='recall')]
-    model_512.compile(loss='categorical_crossentropy', optimizer='adam', metrics=metrics)
+    model_512.compile(loss='categorical_crossentropy',
+                      optimizer='adam',
+                      metrics=metrics)
     model_512.summary()
     return model_512

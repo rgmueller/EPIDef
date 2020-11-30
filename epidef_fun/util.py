@@ -59,60 +59,88 @@ def load_lightfield_data(list_ids, img_size):
         # print(lf.split('\\')[-2:])
 
         with Image.open(f"{lf}\\0001_Set0_Cam_000_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 0] = (0.299*im_resize[:, :, 0] + 0.587*im_resize[:, :, 1]
-                                    + 0.114*im_resize[:, :, 2])
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 0] = (0.299*im_resize[:, :, 0]
+                                + 0.587*im_resize[:, :, 1]
+                                + 0.114*im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_001_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 1] = (0.299*im_resize[:, :, 0] + 0.587*im_resize[:, :, 1]
-                                    + 0.114*im_resize[:, :, 2])
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 1] = (0.299*im_resize[:, :, 0]
+                                + 0.587*im_resize[:, :, 1]
+                                + 0.114*im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_002_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 2] = (0.299*im_resize[:, :, 0] + 0.587*im_resize[:, :, 1]
-                                    + 0.114*im_resize[:, :, 2])
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 2] = (0.299*im_resize[:, :, 0]
+                                + 0.587*im_resize[:, :, 1]
+                                + 0.114*im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_003_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 3] = (0.299 * im_resize[:, :, 0] + 0.587 * im_resize[:, :, 1]
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 3] = (0.299 * im_resize[:, :, 0]
+                                + 0.587 * im_resize[:, :, 1]
                                 + 0.114 * im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_003_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 4] = (0.299 * im_resize[:, :, 0] + 0.587 * im_resize[:, :, 1]
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 4] = (0.299 * im_resize[:, :, 0]
+                                + 0.587 * im_resize[:, :, 1]
                                 + 0.114 * im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_004_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 5] = (0.299 * im_resize[:, :, 0] + 0.587 * im_resize[:, :, 1]
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 5] = (0.299 * im_resize[:, :, 0]
+                                + 0.587 * im_resize[:, :, 1]
                                 + 0.114 * im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_005_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 6] = (0.299 * im_resize[:, :, 0] + 0.587 * im_resize[:, :, 1]
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 6] = (0.299 * im_resize[:, :, 0]
+                                + 0.587 * im_resize[:, :, 1]
                                 + 0.114 * im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_006_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 7] = (0.299 * im_resize[:, :, 0] + 0.587 * im_resize[:, :, 1]
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 7] = (0.299 * im_resize[:, :, 0]
+                                + 0.587 * im_resize[:, :, 1]
                                 + 0.114 * im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_007_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 8] = (0.299 * im_resize[:, :, 0] + 0.587 * im_resize[:, :, 1]
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 8] = (0.299 * im_resize[:, :, 0]
+                                + 0.587 * im_resize[:, :, 1]
                                 + 0.114 * im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_008_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 9] = (0.299 * im_resize[:, :, 0] + 0.587 * im_resize[:, :, 1]
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 9] = (0.299 * im_resize[:, :, 0]
+                                + 0.587 * im_resize[:, :, 1]
                                 + 0.114 * im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_009_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 10] = (0.299 * im_resize[:, :, 0] + 0.587 * im_resize[:, :, 1]
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 10] = (0.299 * im_resize[:, :, 0]
+                                 + 0.587 * im_resize[:, :, 1]
                                  + 0.114 * im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_010_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 11] = (0.299 * im_resize[:, :, 0] + 0.587 * im_resize[:, :, 1]
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 11] = (0.299 * im_resize[:, :, 0]
+                                 + 0.587 * im_resize[:, :, 1]
                                  + 0.114 * im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_011_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 12] = (0.299 * im_resize[:, :, 0] + 0.587 * im_resize[:, :, 1]
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 12] = (0.299 * im_resize[:, :, 0]
+                                 + 0.587 * im_resize[:, :, 1]
                                  + 0.114 * im_resize[:, :, 2])
         with Image.open(f"{lf}\\0001_Set0_Cam_012_img.png") as im:
-            im_resize = np.array(im.resize((img_size, img_size))).astype('float32')
-        features[i, :, :, 13] = (0.299 * im_resize[:, :, 0] + 0.587 * im_resize[:, :, 1]
+            im_resize = np.array(im.resize((img_size, img_size))
+                                 ).astype('float32')
+        features[i, :, :, 13] = (0.299 * im_resize[:, :, 0]
+                                 + 0.587 * im_resize[:, :, 1]
                                  + 0.114 * im_resize[:, :, 2])
 
         # 0: no defect, 1: scratch, 2: dent

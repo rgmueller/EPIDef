@@ -3,7 +3,8 @@ from scipy import ndimage
 
 def generate_traindata(x, y, input_size, batch_size, num_cams):
     """
-    Generates training data using LF images and disparity maps by randomly chosen variables.
+    Generates training data using LF images and disparity maps by
+    randomly chosen variables.
 
     :param x: (#LF, resX, resY, hori_or_vert, num_cams, RGB)
     :param y: (#LF)
@@ -14,10 +15,7 @@ def generate_traindata(x, y, input_size, batch_size, num_cams):
              x_vert: (batch_size, rexX, resY, num_cams)
              label: (batch_size)
              
-    1. Gray image: random R,G,B --> R*img_R + G*img_G + B*img_B
-    2. patch-wise learning: random x,y  --> LFimage[x:x+size1,y:y+size2]
-    3. scale augmentation: scale 1,2,3  --> ex> LFimage[x:x+2*size1:2,y:y+2*size2:2]
-    (not sure if 2. and 3. are applicable for defect detection)
+    Gray image: random R,G,B --> R*img_R + G*img_G + B*img_B
     """
     return x/255, y
 
@@ -55,7 +53,8 @@ def data_augmentation(x, traindata_labels, batch_size, train=True):
             x[batch_i, :, :, :] = x_tmp
 
         if train:
-            x_tmp = np.copy(ndimage.rotate(x[batch_i, :, :, :], np.random.randint(-14, 15),
+            x_tmp = np.copy(ndimage.rotate(x[batch_i, :, :, :],
+                                           np.random.randint(-14, 15),
                                            reshape=False, mode='wrap'))
             x[batch_i, :, :, :] = x_tmp
 

@@ -23,7 +23,8 @@ if __name__ == '__main__':
 
     # Load training data from lightfield .png files:
     print("Loading lightfield paths...")
-    # dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\Master_Project"
+    # dir_lf_images = ("C:\\Users\\muell\\Google Drive\\"
+    #                  + "University\\Master_Project"
     #                  + "\\data_storage\\lightfields")
     dir_lf_images = "C:\\Users\\muell\\Desktop\\1part_1background"
     list_IDs = get_list_ids(dir_lf_images)
@@ -34,18 +35,25 @@ if __name__ == '__main__':
 
     model = define_epidef(input_res, input_res)
 
-    generator_train = DataGenerator(list_IDs_train, batch_size=batch_size, train=True)
-    generator_test = DataGenerator(list_IDs_test, batch_size=batch_size, train=False)
+    generator_train = DataGenerator(list_IDs_train,
+                                    batch_size=batch_size,
+                                    train=True)
+    generator_test = DataGenerator(list_IDs_test,
+                                   batch_size=batch_size,
+                                   train=False)
 
-    early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=20, restore_best_weights=True)
-    callbacks = [early_stopping_cb]  # , keras.callbacks.TensorBoard(log_dir='./logs')]
+    early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=20,
+                                                         restore_best_weights=True)
+    callbacks = [early_stopping_cb]
+    # , keras.callbacks.TensorBoard(log_dir='./logs')]
     # Try this out at some point:
     # def exponential_decay(lr0, s):
     #     def exponential_decay_fn(epoch):
     #         return lr0 * 0.1**(epoch/s)
     #     return exponential_decay_fn
     # exponential_decay_fn = exponential_decay(0.01, 20)
-    # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(exponential_decay_fn)
+    # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(
+    #                                                     exponential_decay_fn)
     model.fit(generator_train,
               epochs=150,
               max_queue_size=10,
