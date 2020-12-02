@@ -26,7 +26,7 @@ if __name__ == '__main__':
     # dir_lf_images = ("C:\\Users\\muell\\Google Drive\\"
     #                  + "University\\Master_Project"
     #                  + "\\data_storage\\lightfields")
-    dir_lf_images = "C:\\Users\\muell\\Desktop\\1part_1background"
+    dir_lf_images = "C:\\Users\\muell\\Desktop\\1part_1background_halfbaseline"
     list_IDs = get_list_ids(dir_lf_images)
 
     print("Done loading lightfield paths.")
@@ -42,9 +42,9 @@ if __name__ == '__main__':
                                    batch_size=batch_size,
                                    train=False)
 
-    early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=20,
-                                                         restore_best_weights=True)
-    callbacks = [early_stopping_cb]
+    early_stop_cb = tf.keras.callbacks.EarlyStopping(patience=20,
+                                                     restore_best_weights=True)
+    callbacks = [early_stop_cb]
     # , keras.callbacks.TensorBoard(log_dir='./logs')]
     # Try this out at some point:
     # def exponential_decay(lr0, s):
