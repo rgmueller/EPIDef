@@ -14,12 +14,12 @@ if __name__ == '__main__':
     load_weights = False
     """
     Model parameters:
-        first layer:  3 convolutional blocks
+        first layer:  3 convolutional blocks for vertical and horizontal views
         second layer: modified EfficientNet
     """
     model_filter_number = 70
     model_learning_rate = 1e-5
-    batch_size = 1
+    batch_size = 4
     input_res = 236
 
     # Define directory for saving checkpoint files:
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     # dir_lf_images = ("C:\\Users\\muell\\Google Drive"
     #                  + "\\University\\Master_Project"
     #                  + "\\data_storage\\lightfields")
-    dir_lf_images = ("C:\\Users\\rmueller\\Desktop\\"
+    dir_lf_images = ("C:\\Users\\muell\\Desktop\\"
                      + "1part_1background_halfbaseline")
     list_IDs = get_list_ids(dir_lf_images)
 
@@ -83,7 +83,6 @@ if __name__ == '__main__':
               callbacks=callbacks,
               validation_data=generator_test)
 
-    # Test after N*100 iterations
     weight_tmp1 = model.get_weights()
     # model.predict([])
     save_path_file_new = f"{directory_ckp}\\after_last_epoch.hdf5"
