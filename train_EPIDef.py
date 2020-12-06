@@ -39,7 +39,7 @@ if __name__ == '__main__':
     #                  + "\\University\\Master_Project"
     #                  + "\\data_storage\\lightfields")
     dir_lf_images = ("C:\\Users\\muell\\Desktop\\"
-                     + "1part_1background_halfbaseline")
+                     + "1part_1background")
     list_IDs = get_list_ids(dir_lf_images)
 
     print("Done loading lightfield paths.")
