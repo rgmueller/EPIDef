@@ -63,9 +63,9 @@ if __name__ == '__main__':
                                         f"{directory_ckp}\\epidef_model.h5",
                                         save_best_only=True)
     early_stopping_cb = tf.keras.callbacks.EarlyStopping(
-                                            patience=10,
+                                            patience=25,
                                             restore_best_weights=True)
-    callbacks = [checkpoint_cb]
+    callbacks = [checkpoint_cb, early_stopping_cb]
     # , keras.callbacks.TensorBoard(log_dir='./logs')]
     # Try this out at some point:
     # def exponential_decay(lr0, s):
