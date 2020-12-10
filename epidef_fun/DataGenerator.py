@@ -16,6 +16,7 @@ class DataGenerator(keras.utils.Sequence):
         self.shuffle = shuffle
         self.train = train
         self.on_epoch_end()
+        self.indexes = np.arange(len(self.list_IDs))
 
     def __len__(self):
         """Denotes the number of batches per epoch"""
@@ -36,7 +37,7 @@ class DataGenerator(keras.utils.Sequence):
 
     def on_epoch_end(self):
         """Updates indexes after each epoch"""
-        self.indexes = np.arange(len(self.list_IDs))
+
         if self.shuffle:
             np.random.shuffle(self.indexes)
 
@@ -45,10 +46,11 @@ class DataGenerator(keras.utils.Sequence):
         # X : (n_samples, *dim, n_channels)
         # Generate data
         x, y = load_lightfield_data(list_ids_temp, 224)
-        (x_vert, x_hori, y) = generate_traindata(x, y, 224, self.batch_size, 7)
+        (x_vert, x_hori, y) = generate_traindata(x, y, 224, self.batch_size,
+                                                 7, self.train)
 
         (x_vert, x_hori, y) = data_augmentation(x_vert, x_hori, y,
                                                 self.batch_size, self.train)
         y_cat = keras.utils.to_categorical(y, num_classes=self.n_classes)
         # print(y_cat)
-        return ([x_vert, x_hori], y_cat)
+        return [x_vert, x_hori], y_cat
