@@ -70,13 +70,14 @@ if __name__ == '__main__':
     callbacks = [checkpoint_cb, early_stopping_cb]
 
     # Try this out at some point:
-    # def exponential_decay(lr0, s):
-    #     def exponential_decay_fn(epoch):
-    #         return lr0 * 0.1**(epoch/s)
-    #     return exponential_decay_fn
-    # exponential_decay_fn = exponential_decay(0.01, 20)
-    # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(
-    #                                               exponential_decay_fn)
+    def exponential_decay(lr0, s):
+        def exponential_decay_fn(epoch):
+            return lr0 * 0.1**(epoch/s)
+        return exponential_decay_fn
+    exp_decay_fn = exponential_decay(0.01, 20)
+    lr_scheduler = tf.keras.callbacks.LearningRateScheduler(exp_decay_fn)
+    #
+
     history = model.fit(generator_train,
                         epochs=200,
                         max_queue_size=10,

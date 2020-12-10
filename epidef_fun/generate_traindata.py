@@ -5,6 +5,8 @@ def generate_traindata(x, y, input_size, batch_size, num_cams, train=False):
     """
     Generates training data using LF images and disparity maps by
     randomly chosen variables.
+    If testing is enabled:
+    Gray image: random R,G,B --> R*img_R + G*img_G + B*img_B
 
     :param x: (#LF, resX, resY, hori_or_vert, num_cams, RGB)
     :param y: (#LF)
@@ -12,11 +14,9 @@ def generate_traindata(x, y, input_size, batch_size, num_cams, train=False):
     :param batch_size: size of batch
     :param num_cams: number of cameras along one direction
     :param train: train mode boolean
-    :return: x_hori: (batch_size, rexX, resY, num_cams)
-             x_vert: (batch_size, rexX, resY, num_cams)
+    :return: x_vert: (batch_size, rexX, resY, num_cams)
+             x_hori: (batch_size, rexX, resY, num_cams)
              label: (batch_size)
-
-    Gray image: random R,G,B --> R*img_R + G*img_G + B*img_B
     """
 
     # Initialize image stack and labels
