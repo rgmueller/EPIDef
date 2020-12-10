@@ -1,6 +1,7 @@
 import os
 import datetime
 import numpy as np
+import json
 
 import tensorflow as tf
 from epidef_fun.util import get_list_ids
@@ -18,7 +19,7 @@ if __name__ == '__main__':
         second layer: modified EfficientNet
     """
     model_filter_number = 70
-    model_learning_rate = 1e-5
+    dataset = "1part_1background"
     batch_size = 4
     input_res = 236
 
@@ -39,7 +40,7 @@ if __name__ == '__main__':
     #                  + "\\University\\Master_Project"
     #                  + "\\data_storage\\lightfields")
     dir_lf_images = ("C:\\Users\\muell\\Desktop\\"
-                     + "1part_1background")
+                     + dataset)
     list_IDs = get_list_ids(dir_lf_images)
 
     print("Done loading lightfield paths.")
@@ -60,13 +61,14 @@ if __name__ == '__main__':
                                    train=False)
 
     checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
-                                        f"{directory_ckp}\\epidef_model.h5",
-                                        save_best_only=True)
+                f"{directory_ckp}\\best_batchsize{batch_size}_{dataset}.h5",
+                save_best_only=True)
     early_stopping_cb = tf.keras.callbacks.EarlyStopping(
-                                            patience=25,
+                                            patience=30,
                                             restore_best_weights=True)
+    tensorboard_cb = tf.keras.callbacks.TensorBoard(log_dir='./logs')
     callbacks = [checkpoint_cb, early_stopping_cb]
-    # , keras.callbacks.TensorBoard(log_dir='./logs')]
+
     # Try this out at some point:
     # def exponential_decay(lr0, s):
     #     def exponential_decay_fn(epoch):
@@ -75,17 +77,20 @@ if __name__ == '__main__':
     # exponential_decay_fn = exponential_decay(0.01, 20)
     # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(
     #                                               exponential_decay_fn)
-    model.fit(generator_train,
-              epochs=200,
-              max_queue_size=10,
-              initial_epoch=0,
-              verbose=2,
-              callbacks=callbacks,
-              validation_data=generator_test)
+    history = model.fit(generator_train,
+                        epochs=200,
+                        max_queue_size=10,
+                        initial_epoch=0,
+                        verbose=2,
+                        callbacks=callbacks,
+                        validation_data=generator_test)
 
     weight_tmp1 = model.get_weights()
-    # model.predict([])
-    save_path_file_new = f"{directory_ckp}\\after_last_epoch.hdf5"
+    with open(f"history_batchsize{batch_size}_{dataset}") as file:
+        json.dump(history.history, file)
+
+    save_path_file_new = (f"{directory_ckp}\\last_batchsize{batch_size}_"
+                          + f"{dataset}.hdf5")
     model.save(save_path_file_new)
 
     print("Weights saved.")
