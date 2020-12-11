@@ -107,7 +107,7 @@ def data_augmentation(x_vert, x_hori, traindata_labels,
             rotation_or_transpose = np.random.randint(0, 6)
         else:
             rotation_or_transpose = 0
-        rotation_or_transpose = 0 # disabled
+        rotation_or_transpose = 0  # disabled
         if rotation_or_transpose == 4:  # Transpose
             x_hori_tmp = np.copy(np.transpose(
                 np.squeeze(x_hori[batch_i, :, :, :]), (1, 0, 2)))

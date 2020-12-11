@@ -20,8 +20,10 @@ if __name__ == '__main__':
     """
     model_filter_number = 70
     dataset = "1part_1background"
-    batch_size = 16
+    batch_size = 8
     input_res = 236
+    pretrained_weights = None
+    load_weights = False
 
     # Define directory for saving checkpoint files:
     directory_ckp = f"epidef_checkpoints\\{network_name}_ckp"
@@ -64,9 +66,9 @@ if __name__ == '__main__':
                 f"{directory_ckp}\\best_batchsize{batch_size}_{dataset}.h5",
                 save_best_only=True)
     early_stopping_cb = tf.keras.callbacks.EarlyStopping(
-                                            patience=30,
+                                            patience=25,
                                             restore_best_weights=True)
-    tensorboard_cb = tf.keras.callbacks.TensorBoard(log_dir='./logs')
+    # tensorboard_cb = tf.keras.callbacks.TensorBoard(log_dir='./logs')
     callbacks = [checkpoint_cb, early_stopping_cb]
 
     # Try this out at some point:
@@ -87,7 +89,7 @@ if __name__ == '__main__':
                         validation_data=generator_test)
 
     weight_tmp1 = model.get_weights()
-    with open(f"history_batchsize{batch_size}_{dataset}") as file:
+    with open(f".\\history_batchsize{batch_size}_{dataset}") as file:
         json.dump(history.history, file)
 
     save_path_file_new = (f"{directory_ckp}\\last_batchsize{batch_size}_"
