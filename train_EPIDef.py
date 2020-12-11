@@ -20,7 +20,7 @@ if __name__ == '__main__':
     """
     model_filter_number = 70
     dataset = "1part_1background"
-    batch_size = 4
+    batch_size = 16
     input_res = 236
 
     # Define directory for saving checkpoint files:
@@ -39,8 +39,8 @@ if __name__ == '__main__':
     # dir_lf_images = ("C:\\Users\\muell\\Google Drive"
     #                  + "\\University\\Master_Project"
     #                  + "\\data_storage\\lightfields")
-    dir_lf_images = ("C:\\Users\\muell\\Desktop\\"
-                     + dataset)
+    dir_lf_images = ("C:\\Users\\muell\\Google Drive\\University\\"
+                     + f"Master_Project\\data_storage\\{dataset}")
     list_IDs = get_list_ids(dir_lf_images)
 
     print("Done loading lightfield paths.")
@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
     generator_train = DataGenerator(list_IDs_train,
                                     batch_size=batch_size,
-                                    train=False)
+                                    train=True)
     generator_test = DataGenerator(list_IDs_test,
                                    batch_size=batch_size,
                                    train=False)

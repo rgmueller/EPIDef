@@ -16,7 +16,7 @@ class DataGenerator(keras.utils.Sequence):
         self.shuffle = shuffle
         self.train = train
         self.on_epoch_end()
-        self.indexes = np.arange(len(self.list_IDs))
+
 
     def __len__(self):
         """Denotes the number of batches per epoch"""
@@ -37,7 +37,7 @@ class DataGenerator(keras.utils.Sequence):
 
     def on_epoch_end(self):
         """Updates indexes after each epoch"""
-
+        self.indexes = np.arange(len(self.list_IDs))
         if self.shuffle:
             np.random.shuffle(self.indexes)
 
