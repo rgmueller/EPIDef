@@ -19,10 +19,10 @@ if __name__ == '__main__':
         second layer: modified EfficientNet
     """
     model_filter_number = 70
-    dataset = "1part_1background"
+    dataset = "workshop_5parts"
     batch_size = 8
     input_res = 236
-    pretrained_weights = None
+    pretrained_weights = "best_batchsize8_1part_1background.h5"
     load_weights = False
 
     # Define directory for saving checkpoint files:
@@ -79,6 +79,9 @@ if __name__ == '__main__':
     exp_decay_fn = exponential_decay(0.01, 20)
     lr_scheduler = tf.keras.callbacks.LearningRateScheduler(exp_decay_fn)
     #
+
+    if load_weights:
+        model.load(f"{directory_ckp}\\{pretrained_weights}")
 
     history = model.fit(generator_train,
                         epochs=200,

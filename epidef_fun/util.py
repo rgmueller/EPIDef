@@ -16,7 +16,7 @@ def get_list_ids(lf_directory):
     error = 0
     list_ids = []
     for path, subdirs, files in os.walk(lf_directory):
-        if '0001_Set0_Cam_003_img.png' in files:  # only add paths with images
+        if '0002_Set0_Cam_003_img.png' in files:  # only add paths with images
             list_ids.append(path)
             if 'good' in path:
                 good += 1
@@ -58,56 +58,56 @@ def load_lightfield_data(list_ids, img_size):
     labels = np.zeros((len(list_ids)), np.int64)
     for i, lf in enumerate(list_ids):
         # print(lf.split('\\')[-2:])
-        with Image.open(f"{lf}\\0001_Set0_Cam_000_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_000_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 0, 6, :] = im_resize[:, :, :3]  # rightmost image
-        with Image.open(f"{lf}\\0001_Set0_Cam_001_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_001_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 0, 5, :] = im_resize[:, :, :3]  # (R,G,B,alpha)
-        with Image.open(f"{lf}\\0001_Set0_Cam_002_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_002_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 0, 4, :] = im_resize[:, :, :3]
-        with Image.open(f"{lf}\\0001_Set0_Cam_003_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_003_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 0, 3, :] = im_resize[:, :, :3]  # center image
         features[i, :, :, 1, 3, :] = im_resize[:, :, :3]
-        with Image.open(f"{lf}\\0001_Set0_Cam_004_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_004_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 0, 2, :] = im_resize[:, :, :3]
-        with Image.open(f"{lf}\\0001_Set0_Cam_005_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_005_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 0, 1, :] = im_resize[:, :, :3]
-        with Image.open(f"{lf}\\0001_Set0_Cam_006_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_006_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 0, 0, :] = im_resize[:, :, :3]  # leftmost image
-        with Image.open(f"{lf}\\0001_Set0_Cam_007_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_007_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 1, 0, :] = im_resize[:, :, :3]  # bottom image
-        with Image.open(f"{lf}\\0001_Set0_Cam_008_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_008_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 1, 1, :] = im_resize[:, :, :3]
-        with Image.open(f"{lf}\\0001_Set0_Cam_009_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_009_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 1, 2, :] = im_resize[:, :, :3]
-        with Image.open(f"{lf}\\0001_Set0_Cam_010_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_010_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 1, 4, :] = im_resize[:, :, :3]
-        with Image.open(f"{lf}\\0001_Set0_Cam_011_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_011_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 1, 5, :] = im_resize[:, :, :3]
-        with Image.open(f"{lf}\\0001_Set0_Cam_012_img.png") as im:
+        with Image.open(f"{lf}\\0002_Set0_Cam_012_img.png") as im:
             im_resize = np.array(im.resize((img_size, img_size))
                                  ).astype('float32')
         features[i, :, :, 1, 6, :] = im_resize[:, :, :3]  # top image
