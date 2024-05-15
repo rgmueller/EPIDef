@@ -1,1 +1,1 @@
-EPINET + EfficientNet classifier
+EPINET + EfficientNet classifier.
